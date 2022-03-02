@@ -2,14 +2,39 @@
     box-sizing: border-box;
 }
 
+:root {
+    /* SPRITES SIZE */
+    --bigger-sprite: 256px;
+    --big-sprite: 128px;
+    --medium-sprite: 64px;
+    --small-sprite: 32px;
+}
+
+/* SPRITES SIZE */
+.big-sprite {
+    height: var(--big-sprite);
+    width: var(--big-sprite);
+}
+
 #menu {
     display: flex;
+    flex-direction: column;
 }
 
 #game {
     display: none;
+    flex-direction: column;
+}
+
+#pokemon-info {
+    display: flex;
+    flex-direction: column;
+
+    width: 200px;
+    height: 200px;
 }
 
 #results {
     display: none;
+    flex-direction: column;
 }
