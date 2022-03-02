@@ -151,7 +151,7 @@ async function loadPkmnData () {
     currentPkmnData = {}
     currentPkmnData.id = pkmnData.id
     currentPkmnData.sprite = pkmnData.sprites.front_default
-    currentPkmnData.name = pkmnData.name
+    currentPkmnData.name = capitalizeWord(pkmnData.name)
     currentPkmnData.height = pkmnData.height
     currentPkmnData.weight = pkmnData.weight
     currentPkmnData.type1 = pkmnData.types[0].type.name
@@ -161,7 +161,7 @@ async function loadPkmnData () {
 async function displayPkmnData () {
     // displays data on the dom
     await loadPkmnData()
-    domPkmnId.innerHTML = currentPkmnData.id
+    domPkmnId.innerHTML = "#" + currentPkmnData.id
     domPkmnSprite.setAttribute("src", currentPkmnData.sprite)
     domPkmnName.innerHTML = currentPkmnData.name
     domPkmnSize.innerHTML = String(parseInt(currentPkmnData.height) / 10) + "m - " + String(parseInt(currentPkmnData.weight) /10) + "kg"
@@ -238,6 +238,10 @@ function clearResultsData () {
 function createIntArray (start, end) {
     if (start > end) return
     return Array(end - start + 1).fill().map((_, index) => start + index)
+}
+
+function capitalizeWord (s) {
+    return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
 // FIRST FUNCTION CALL
