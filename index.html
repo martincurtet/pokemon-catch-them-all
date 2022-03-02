@@ -67,8 +67,20 @@
                     <span id="pokemon-gen"></span>
                 </div>
                 <button onclick="prevPkmn()">Previous</button>
-                <button onclick="nextPkmn()">Next</button>
+                <!-- <button onclick="nextPkmn()">Next</button> -->
+                <button onclick="smashPkmn()">Smash</button>
+                <button onclick="passPkmn()">Pass</button>
+                <button onclick="loadResultsData()">Load Results</button>
             </div><!-- END GAME-->
+
+            <!-- RESULTS -->
+            <div id="results">
+                <div id="results-stats">
+                    <p>Pokémons reviewed: <span id="results-total"></span></p>
+                    <p>Pokémons I'd smash: <span id="results-smash-total"></span></p>
+                    <p>Pokémons I'd pass: <span id="results-pass-total"></span></p>
+                </div>
+            </div><!-- END RESULTS -->
         </div><!-- END APP -->
     </body>
 </html>

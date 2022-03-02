@@ -14,6 +14,12 @@ var pkmnIdsArray = []
 var currentArrayIndex = 0
 var currentPkmnData = {}
 
+var resultsData = {
+    "smash": 0,
+    "pass": 0,
+    "total": 0
+}
+
 // DOM ELEMENTS
 const domMenu = document.getElementById("menu")
 const domGen1 = document.getElementById("gen1")
@@ -34,6 +40,10 @@ const domPkmnName = document.getElementById("pokemon-name")
 const domPkmnSize = document.getElementById("pokemon-size")
 const domPkmnTypes = document.getElementById("pokemon-types")
 const domPkmnGen = document.getElementById("pokemon-gen")
+
+const domResultsTotal = document.getElementById("results-total")
+const domResultsSmashTotal = document.getElementById("results-smash-total")
+const domResultsPassTotal = document.getElementById("results-pass-total")
 
 // MENU FUNCTIONS
 function calcGenTotal () {
@@ -106,6 +116,19 @@ function nextPkmn () {
     displayPkmnData()
 }
 
+function passPkmn () {
+    // pass just skips the pokemon but adds the number to the total
+    resultsData["pass"] += 1
+    resultsData["total"] += 1
+    nextPkmn()
+}
+function smashPkmn () {
+    // smash saves all relevant data to the stats then next pokemon
+    resultsData["smash"] += 1
+    resultsData["total"] += 1
+    nextPkmn()
+}
+
 async function fetchPkmnData () {
     // fetch the data from the API
     let idToFetch = pkmnIdsArray[currentArrayIndex]
@@ -135,6 +158,13 @@ async function displayPkmnData () {
     domPkmnSize.innerHTML = String(parseInt(currentPkmnData.height) / 10) + "m - " + String(parseInt(currentPkmnData.weight) /10) + "kg"
     domPkmnTypes.innerHTML = currentPkmnData.type1
     if (currentPkmnData.type2) domPkmnTypes.innerHTML += " - " + currentPkmnData.type2
+}
+
+// RESULTS FUNCTIONS
+function loadResultsData () {
+    domResultsTotal.innerHTML = resultsData["total"]
+    domResultsSmashTotal.innerHTML = resultsData["smash"]
+    domResultsPassTotal.innerHTML = resultsData["pass"]
 }
 
 // MISC FUNCTIONS
