@@ -40,11 +40,15 @@ const domPkmnName = document.getElementById("pokemon-name")
 const domPkmnSize = document.getElementById("pokemon-size")
 const domPkmnTypes = document.getElementById("pokemon-types")
 const domPkmnGen = document.getElementById("pokemon-gen")
+const domButtonCheck = document.getElementById("button-check")
+const domButtonEnd = document.getElementById("button-end")
 
 const domResults = document.getElementById("results")
 const domResultsTotal = document.getElementById("results-total")
 const domResultsSmashTotal = document.getElementById("results-smash-total")
 const domResultsPassTotal = document.getElementById("results-pass-total")
+const domButtonBackToGame = document.getElementById("button-back-to-game")
+const domButtonReplay = document.getElementById("button-replay")
 
 // MENU FUNCTIONS
 function calcGenTotal () {
@@ -100,7 +104,6 @@ function calcPkmnIdsArray (random=false) {
         }
     }
 
-    // start game
     displayPkmnData()
 }
 
@@ -114,6 +117,11 @@ function prevPkmn () {
 function nextPkmn () {
     if (currentArrayIndex >= pkmnIdsArray.length - 1) return
     currentArrayIndex += 1
+
+    // re-enable results buttons
+    domButtonCheck.disabled = false
+    domButtonEnd.disabled = false
+
     displayPkmnData()
 }
 
@@ -168,23 +176,62 @@ function loadResultsData () {
     domResultsPassTotal.innerHTML = resultsData["pass"]
 }
 
-// NAVIGATION
+// NAVIGATION FUNCTIONS
 function loadMenu () {
     domMenu.style.display = "flex",
     domGame.style.display = "none"
     domResults.style.display = "none"
+
+    clearGameData()
+    clearResultsData()
 }
 
-function loadGame () {
+function loadGame (random=false) {
     domMenu.style.display = "none",
     domGame.style.display = "flex"
     domResults.style.display = "none"
+
+    calcPkmnIdsArray(random)
 }
 
-function loadResults () {
+function loadResults (end=false) {
     domMenu.style.display = "none",
     domGame.style.display = "none"
     domResults.style.display = "flex"
+
+    // buttons
+    domButtonBackToGame.style.display = end ? "none" : "block"
+    domButtonReplay.style.display = end ? "block" : "none"
+
+    loadResultsData()
+}
+
+// CLEAR DATA FUNCTIONS
+function clearGameData () {
+    // var
+    pkmnIdsArray = []
+    currentArrayIndex = 0
+    currentPkmnData = {}
+
+    // dom
+    domPkmnSprite.setAttribute("src", "")
+    domPkmnId.innerHTML = ""
+    domPkmnName.innerHTML = ""
+    domPkmnSize.innerHTML = ""
+    domPkmnTypes.innerHTML = ""
+    domPkmnGen.innerHTML = ""
+    domButtonCheck.disabled = true
+    domButtonEnd.disabled = true
+}
+
+function clearResultsData () {
+    // var
+    resultsData["smash"] = 0
+    resultsData["pass"] = 0
+    resultsData["total"] = 0
+
+    // dom
+    loadResultsData()
 }
 
 // MISC FUNCTIONS

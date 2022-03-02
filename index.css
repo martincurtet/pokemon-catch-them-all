@@ -38,3 +38,11 @@
     display: none;
     flex-direction: column;
 }
+
+#button-back-to-menu {
+    display: block;
+}
+
+#button-replay {
+    display: block;
+}

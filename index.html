@@ -51,8 +51,8 @@
                 </div>
                 <p>Total: <span id="genTotal">0</span></p>
                 <div id="menu-buttons" class="button-container">
-                    <button class="button" onclick="calcPkmnIdsArray(); loadGame()">Pokédex order</button>
-                    <button class="button" onclick="calcPkmnIdsArray(random=true); loadGame()">Random</button>
+                    <button class="button" onclick="loadGame()">Pokédex order</button>
+                    <button class="button" onclick="loadGame(random=true)">Random</button>
                 </div>
             </div><!-- END MENU -->
 
@@ -67,11 +67,12 @@
                     <span id="pokemon-gen"></span>
                 </div>
                 <div class="button-container">
-                    <button onclick="prevPkmn()">Previous</button>
+                    <!-- <button onclick="prevPkmn()">Previous</button> -->
                     <!-- <button onclick="nextPkmn()">Next</button> -->
                     <button onclick="smashPkmn()">Smash</button>
                     <button onclick="passPkmn()">Pass</button>
-                    <button onclick="loadResultsData(); loadResults()">Load Results</button>
+                    <button id="button-check" onclick="loadResults()" disabled="true">Check Results</button>
+                    <button id="button-end" onclick="loadResults(end=true)" disabled="true">End now</button>
                     <button onclick="loadMenu()">Back</button>
                 </div>
             </div><!-- END GAME-->
@@ -84,8 +85,8 @@
                     <p>Pokémons I'd pass: <span id="results-pass-total"></span></p>
                 </div>
                 <div class="button-container">
-                    <button onclick="loadGame()">Back</button>
-                    <button onclick="loadMenu()">Replay</button>
+                    <button id="button-back-to-game" onclick="loadGame()">Back</button>
+                    <button id="button-replay" onclick="loadMenu()">Replay</button>
                 </div>
             </div><!-- END RESULTS -->
         </div><!-- END APP -->
