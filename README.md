@@ -5,3 +5,5 @@ Pokémon Smash or Pass is an online browser game hosted on ... and using data fr
 ### Features
 
 The player is able to select the generations he wants to review and then play in order or in a random mode. Pokémon selected for 'Smash' will be displayed in a final downloadable result as well as relevant statistics.
+
+Font was found [here](https://www.dafont.com/pkmn-rbygsc.font)
