@@ -133,7 +133,8 @@ async function displayPkmnData () {
     domPkmnSprite.setAttribute("src", currentPkmnData.sprite)
     domPkmnName.innerHTML = currentPkmnData.name
     domPkmnSize.innerHTML = String(parseInt(currentPkmnData.height) / 10) + "m - " + String(parseInt(currentPkmnData.weight) /10) + "kg"
-    domPkmnTypes.innerHTML = currentPkmnData.type1 + " - " + currentPkmnData.type2
+    domPkmnTypes.innerHTML = currentPkmnData.type1
+    if (currentPkmnData.type2) domPkmnTypes.innerHTML += " - " + currentPkmnData.type2
 }
 
 // MISC FUNCTIONS
