@@ -51,8 +51,8 @@
                 </div>
                 <p>Total: <span id="genTotal">0</span></p>
                 <div id="menu-buttons" class="button-container">
-                    <button class="button" onclick="calcPkmnIdsArray()">Pokédex order</button>
-                    <button class="button" onclick="calcPkmnIdsArray(random=true)">Random</button>
+                    <button class="button" onclick="calcPkmnIdsArray(); loadGame()">Pokédex order</button>
+                    <button class="button" onclick="calcPkmnIdsArray(random=true); loadGame()">Random</button>
                 </div>
             </div><!-- END MENU -->
 
@@ -70,7 +70,8 @@
                 <!-- <button onclick="nextPkmn()">Next</button> -->
                 <button onclick="smashPkmn()">Smash</button>
                 <button onclick="passPkmn()">Pass</button>
-                <button onclick="loadResultsData()">Load Results</button>
+                <button onclick="loadResultsData(); loadResults()">Load Results</button>
+                <button onclick="loadMenu()">Back</button>
             </div><!-- END GAME-->
 
             <!-- RESULTS -->
@@ -80,6 +81,8 @@
                     <p>Pokémons I'd smash: <span id="results-smash-total"></span></p>
                     <p>Pokémons I'd pass: <span id="results-pass-total"></span></p>
                 </div>
+                <button onclick="loadGame()">Back</button>
+                <button onclick="loadMenu()">Replay</button>
             </div><!-- END RESULTS -->
         </div><!-- END APP -->
     </body>

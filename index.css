@@ -1,0 +1,15 @@
+*, *:after, *:before {
+    box-sizing: border-box;
+}
+
+#menu {
+    display: flex;
+}
+
+#game {
+    display: none;
+}
+
+#results {
+    display: none;
+}

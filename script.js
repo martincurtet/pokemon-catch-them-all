@@ -41,6 +41,7 @@ const domPkmnSize = document.getElementById("pokemon-size")
 const domPkmnTypes = document.getElementById("pokemon-types")
 const domPkmnGen = document.getElementById("pokemon-gen")
 
+const domResults = document.getElementById("results")
 const domResultsTotal = document.getElementById("results-total")
 const domResultsSmashTotal = document.getElementById("results-smash-total")
 const domResultsPassTotal = document.getElementById("results-pass-total")
@@ -165,6 +166,25 @@ function loadResultsData () {
     domResultsTotal.innerHTML = resultsData["total"]
     domResultsSmashTotal.innerHTML = resultsData["smash"]
     domResultsPassTotal.innerHTML = resultsData["pass"]
+}
+
+// NAVIGATION
+function loadMenu () {
+    domMenu.style.display = "flex",
+    domGame.style.display = "none"
+    domResults.style.display = "none"
+}
+
+function loadGame () {
+    domMenu.style.display = "none",
+    domGame.style.display = "flex"
+    domResults.style.display = "none"
+}
+
+function loadResults () {
+    domMenu.style.display = "none",
+    domGame.style.display = "none"
+    domResults.style.display = "flex"
 }
 
 // MISC FUNCTIONS
