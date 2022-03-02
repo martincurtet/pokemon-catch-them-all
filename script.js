@@ -10,8 +10,9 @@ const gen8Array = createIntArray(810, 898)
 
 // VARIABLES
 var genSelections = [true, true, true, true, true, true, true, true]
-var pkmnIdsArray =[]
+var pkmnIdsArray = []
 var currentArrayIndex = 0
+var currentPkmnData = {}
 
 // DOM ELEMENTS
 const domMenu = document.getElementById("menu")
@@ -24,6 +25,15 @@ const domGen6 = document.getElementById("gen6")
 const domGen7 = document.getElementById("gen7")
 const domGen8 = document.getElementById("gen8")
 const domGenTotal = document.getElementById("genTotal")
+
+const domGame = document.getElementById("game")
+const domPkmnInfos = document.getElementById("pokemon-info")
+const domPkmnSprite = document.getElementById("pokemon-sprite")
+const domPkmnId = document.getElementById("pokemon-id")
+const domPkmnName = document.getElementById("pokemon-name")
+const domPkmnSize = document.getElementById("pokemon-size")
+const domPkmnTypes = document.getElementById("pokemon-types")
+const domPkmnGen = document.getElementById("pokemon-gen")
 
 // MENU FUNCTIONS
 function calcGenTotal () {
@@ -79,10 +89,54 @@ function calcPkmnIdsArray (random=false) {
         }
     }
 
-    console.log(pkmnIdsArray)
+    // start game
+    displayPkmnData()
 }
 
-// MISC FUNCTION
+// GAME FUNCTIONS
+function prevPkmn () {
+    if (currentArrayIndex <= 0) return
+    currentArrayIndex -= 1
+    displayPkmnData()
+}
+
+function nextPkmn () {
+    if (currentArrayIndex >= pkmnIdsArray.length - 1) return
+    currentArrayIndex += 1
+    displayPkmnData()
+}
+
+async function fetchPkmnData () {
+    // fetch the data from the API
+    let idToFetch = pkmnIdsArray[currentArrayIndex]
+    if (idToFetch < 1 || idToFetch > 898) return
+    return await (await fetch("https://pokeapi.co/api/v2/pokemon/" + idToFetch)).json()
+}
+
+async function loadPkmnData () {
+    // load the data into a js object
+    let pkmnData = await fetchPkmnData()
+    currentPkmnData = {}
+    currentPkmnData.id = pkmnData.id
+    currentPkmnData.sprite = pkmnData.sprites.front_default
+    currentPkmnData.name = pkmnData.name
+    currentPkmnData.height = pkmnData.height
+    currentPkmnData.weight = pkmnData.weight
+    currentPkmnData.type1 = pkmnData.types[0].type.name
+    if (pkmnData.types[1]) currentPkmnData.type2 = pkmnData.types[1].type.name
+}
+
+async function displayPkmnData () {
+    // displays data on the dom
+    await loadPkmnData()
+    domPkmnId.innerHTML = currentPkmnData.id
+    domPkmnSprite.setAttribute("src", currentPkmnData.sprite)
+    domPkmnName.innerHTML = currentPkmnData.name
+    domPkmnSize.innerHTML = String(parseInt(currentPkmnData.height) / 10) + "m - " + String(parseInt(currentPkmnData.weight) /10) + "kg"
+    domPkmnTypes.innerHTML = currentPkmnData.type1 + " - " + currentPkmnData.type2
+}
+
+// MISC FUNCTIONS
 function createIntArray (start, end) {
     if (start > end) return
     return Array(end - start + 1).fill().map((_, index) => start + index)
