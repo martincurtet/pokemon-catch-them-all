@@ -299,6 +299,7 @@ function loadResultsData () {
     // type ratios
     domResultsTypeRatios.innerHTML = ""
     for (let i= 0; i < typesArray.length; i++) {
+        console.log("trying to insert: " + typesArray[i] + " with value of " + resultsData[typesArray[i]])
         let element = document.createElement("span")
         element.setAttribute("value", resultsData[typesArray[i]])
         element.style.color = "var(--" + typesArray[i] + "-color)"
@@ -306,20 +307,26 @@ function loadResultsData () {
         if (i == 0) {
             // first element
             domResultsTypeRatios.appendChild(element)
+            console.log("added first")
         } else if (element.getAttribute("value") > domResultsTypeRatios.firstChild.getAttribute("value")) {
             // if the current type is higher than the first
             domResultsTypeRatios.insertBefore(element, domResultsTypeRatios.firstChild)
+            console.log("added at first position")
         } else {
             // go through the children to find the correct place
             let added = false
             for (let j = 1; j < domResultsTypeRatios.childElementCount; j++) {
+                console.log("value: " + element.getAttribute("value") + ", value of compared element: " + domResultsTypeRatios.children[j].getAttribute("value"))
                 if (element.getAttribute("value") > domResultsTypeRatios.children[j].getAttribute("value")) {
                     domResultsTypeRatios.insertBefore(element, domResultsTypeRatios.children[j])
                     added = true
+                    console.log("added at " + j + " position")
+                    break;
                 }
             }
             if (!added) {
                 domResultsTypeRatios.appendChild(element)
+                console.log("added last")
             }
         }
     }
