@@ -106,7 +106,20 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    margin-bottom: 60px;
+
+    width: 100%;
+}
+
+#results-picture {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 20px;
+
+    padding: 30px 20px 0px 20px;
 
     width: 100%;
 }
@@ -120,7 +133,8 @@ body {
 #results-ratios {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 100px;
 
     width: 100%;
 }
@@ -135,6 +149,10 @@ body {
     display: flex;
     flex-direction: column;
     gap: var(--results-line-spacing);
+}
+
+#results-grid {
+    width: 100%;
 }
 
 #button-back-to-menu {
@@ -202,7 +220,7 @@ body {
 
 .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     column-gap: 10px;
 }
 

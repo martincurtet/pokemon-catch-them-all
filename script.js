@@ -97,6 +97,7 @@ var resultsData = {
 }
 
 // DOM ELEMENTS
+const domTitle = document.getElementById("app-title")
 const domMenu = document.getElementById("menu")
 const domGen1 = document.getElementById("gen1")
 const domGen2 = document.getElementById("gen2")
@@ -124,6 +125,7 @@ const domButtonCheck = document.getElementById("button-check")
 const domButtonEnd = document.getElementById("button-end")
 
 const domResults = document.getElementById("results")
+const domResultsPicture = document.getElementById("results-picture")
 const domResultsTotal = document.getElementById("results-total")
 const domResultsSmashTotal = document.getElementById("results-smash-total")
 const domResultsPassTotal = document.getElementById("results-pass-total")
@@ -134,6 +136,9 @@ const domResultsSmashGrid = document.getElementById("results-smash-grid")
 const domButtonDownload = document.getElementById("button-download")
 const domButtonBackToGame = document.getElementById("button-back-to-game")
 const domButtonReplay = document.getElementById("button-replay")
+
+const domDownloadCanvasContainer = document.getElementById("download-canvas-container")
+const domDownloadLink = document.getElementById("download-link")
 
 // MENU FUNCTIONS
 function calcGenTotal () {
@@ -562,6 +567,18 @@ function clearResultsData () {
     domResultsGenRatios.innerHTML = ""
     domResultsSmashGrid.innerHTML = ""
     loadResultsData()
+}
+
+function printResults () {
+    html2canvas(domResultsPicture, { allowTaint: true, useCORS: true, backgroundColor: "#CCCCCC" }).then(function(canvas) {
+        canvas.setAttribute("hidden", true)
+        canvas.innerHTML = domResultsPicture.innerHTML
+        domDownloadCanvasContainer.append(canvas)
+        let cvs = document.querySelector("canvas")
+        domDownloadLink.href = cvs.toDataURL()
+        domDownloadLink.download = "results.png"
+        domDownloadLink.click()
+    })
 }
 
 // MISC FUNCTIONS
