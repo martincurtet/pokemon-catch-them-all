@@ -119,6 +119,7 @@ const domPkmnGen = document.getElementById("pokemon-gen")
 const domSmashTotal = document.getElementById("smash-total")
 const domSmashRatio = document.getElementById("smash-ratio")
 const domPassTotal = document.getElementById("pass-total")
+const domSmashList = document.getElementById("smash-list")
 const domButtonCheck = document.getElementById("button-check")
 const domButtonEnd = document.getElementById("button-end")
 
@@ -231,6 +232,10 @@ function smashPkmn () {
         resultsData[currentPkmnData.type1] += 1
     }
     resultsData["gen" + domPkmnGen.innerHTML.slice(-1)] += 1
+
+    // smash list
+    domSmashList.innerHTML += " " + currentPkmnData.name
+
     updateRatios()
     nextPkmn()
 }
