@@ -119,7 +119,7 @@ const domPkmnGen = document.getElementById("pokemon-gen")
 const domSmashTotal = document.getElementById("smash-total")
 const domSmashRatio = document.getElementById("smash-ratio")
 const domPassTotal = document.getElementById("pass-total")
-const domSmashList = document.getElementById("smash-list")
+const domSmashGrid = document.getElementById("smash-grid")
 const domButtonCheck = document.getElementById("button-check")
 const domButtonEnd = document.getElementById("button-end")
 
@@ -130,7 +130,7 @@ const domResultsPassTotal = document.getElementById("results-pass-total")
 const domResultsSmashRatio = document.getElementById("results-smash-ratio")
 const domResultsTypeRatios = document.getElementById("results-type-ratios")
 const domResultsGenRatios = document.getElementById("results-gen-ratios")
-const domResultsSmashList = document.getElementById("results-smash-list")
+const domResultsSmashGrid = document.getElementById("results-smash-grid")
 const domButtonDownload = document.getElementById("button-download")
 const domButtonBackToGame = document.getElementById("button-back-to-game")
 const domButtonReplay = document.getElementById("button-replay")
@@ -234,8 +234,10 @@ function smashPkmn () {
     }
     resultsData["gen" + domPkmnGen.innerHTML.slice(-1)] += 1
 
-    // smash list
-    domSmashList.innerHTML += " " + currentPkmnData.name
+    // smash grid
+    let element = document.createElement("div")
+    element.innerHTML = currentPkmnData.name
+    domSmashGrid.appendChild(element)
 
     updateRatios()
     nextPkmn()
@@ -435,7 +437,7 @@ function loadResultsData () {
     }
 
     // smash list
-    domResultsSmashList.innerHTML = domSmashList.innerHTML
+    domResultsSmashGrid.innerHTML = domSmashGrid.innerHTML
 }
 
 // NAVIGATION FUNCTIONS
@@ -491,7 +493,7 @@ function clearGameData () {
     domPkmnSize.innerHTML = ""
     domPkmnTypes.innerHTML = ""
     domPkmnGen.innerHTML = ""
-    domSmashList.innerHTML = ""
+    domSmashGrid.innerHTML = ""
     domButtonCheck.disabled = true
     domButtonEnd.disabled = true
 }
@@ -558,7 +560,7 @@ function clearResultsData () {
     // dom
     domResultsTypeRatios.innerHTML = ""
     domResultsGenRatios.innerHTML = ""
-    domResultsSmashList.innerHTML = ""
+    domResultsSmashGrid.innerHTML = ""
     loadResultsData()
 }
 

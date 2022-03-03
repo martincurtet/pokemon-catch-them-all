@@ -200,6 +200,16 @@ body {
     border-radius: 10px;
 }
 
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    column-gap: 10px;
+}
+
+.grid div {
+    justify-self: center;
+}
+
 .normal {
     background-color: var(--normal-color);
 }
