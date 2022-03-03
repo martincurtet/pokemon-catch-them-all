@@ -303,14 +303,30 @@ async function displayPkmnData () {
     domPkmnSprite.setAttribute("src", currentPkmnData.sprite)
     domPkmnName.innerHTML = currentPkmnData.name
     domPkmnSize.innerHTML = String(parseInt(currentPkmnData.height) / 10) + "m - " + String(parseInt(currentPkmnData.weight) /10) + "kg"
-    // types and background color
+    // type icons and background color
     if (currentPkmnData.type2) {
-        domPkmnTypes.innerHTML = currentPkmnData.type1 + " - " + currentPkmnData.type2
+        domPkmnTypes.innerHTML = ""
+        let typeIcon1 = document.createElement("span")
+        let typeIcon2 = document.createElement("span")
+        typeIcon1.innerHTML = currentPkmnData.type1
+        typeIcon2.innerHTML = currentPkmnData.type2
+        typeIcon1.classList.add("type-icon")
+        typeIcon2.classList.add("type-icon")
+        typeIcon1.style.backgroundColor = colorDict[currentPkmnData.type1]
+        typeIcon2.style.backgroundColor = colorDict[currentPkmnData.type2]
+        domPkmnTypes.appendChild(typeIcon1)
+        domPkmnTypes.appendChild(typeIcon2)
+
         domPkmnInfos.removeAttribute("class")
-        // domPkmnInfos.classList.add(currentPkmnData.type1)
         domPkmnInfos.style.backgroundImage = "linear-gradient(" + colorDict[currentPkmnData.type1] + ", " + colorDict[currentPkmnData.type2] + ")"
     } else {
-        domPkmnTypes.innerHTML = currentPkmnData.type1
+        domPkmnTypes.innerHTML = ""
+        let typeIcon1 = document.createElement("span")
+        typeIcon1.innerHTML = currentPkmnData.type1
+        typeIcon1.classList.add("type-icon")
+        typeIcon1.style.backgroundColor = colorDict[currentPkmnData.type1]
+        domPkmnTypes.appendChild(typeIcon1)
+
         domPkmnInfos.style.backgroundImage = ""
         domPkmnInfos.removeAttribute("class")
         domPkmnInfos.classList.add(currentPkmnData.type1)
