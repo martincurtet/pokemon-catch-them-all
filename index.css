@@ -13,6 +13,8 @@
     --small-sprite: 32px;
 
     /* COLORS */
+    --background-color: #CCCCCC;
+
     --normal-color: #A8A77A;
     --fire-color:  #EE8130;
     --water-color:  #6390F0;
@@ -37,8 +39,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+
     margin: 0;
     padding: 0;
+
+    background-color: var(--background-color);
 }
 
 /* IDS */
