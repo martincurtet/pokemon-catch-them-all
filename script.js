@@ -179,7 +179,10 @@ function prevPkmn () {
 }
 
 function nextPkmn () {
-    if (currentArrayIndex >= pkmnIdsArray.length - 1) return
+    if (currentArrayIndex >= pkmnIdsArray.length - 1) {
+        loadResults(end=true)
+        return
+    }
     currentArrayIndex += 1
 
     // re-enable results buttons
@@ -196,6 +199,7 @@ function passPkmn () {
     updateRatios()
     nextPkmn()
 }
+
 function smashPkmn () {
     // smash saves all relevant data to the stats then next pokemon
     resultsData["smash"] += 1
