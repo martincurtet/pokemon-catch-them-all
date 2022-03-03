@@ -129,6 +129,7 @@ const domResultsPassTotal = document.getElementById("results-pass-total")
 const domResultsSmashRatio = document.getElementById("results-smash-ratio")
 const domResultsTypeRatios = document.getElementById("results-type-ratios")
 const domResultsGenRatios = document.getElementById("results-gen-ratios")
+const domButtonDownload = document.getElementById("button-download")
 const domButtonBackToGame = document.getElementById("button-back-to-game")
 const domButtonReplay = document.getElementById("button-replay")
 
@@ -460,6 +461,7 @@ function loadResults (end=false) {
     domResults.style.display = "flex"
 
     // buttons
+    domButtonDownload.style.display = end ? "block" : "none"
     domButtonBackToGame.style.display = end ? "none" : "block"
     domButtonReplay.style.display = end ? "block" : "none"
 

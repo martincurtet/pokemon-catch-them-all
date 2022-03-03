@@ -84,14 +84,17 @@
             <!-- RESULTS -->
             <div id="results">
                 <div id="results-stats">
-                    <p>Pokémons reviewed: <span id="results-total"></span></p>
-                    <p>Pokémons I'd smash: <span id="results-smash-total"></span></p>
-                    <p>Pokémons I'd pass: <span id="results-pass-total"></span></p>
-                    <p>Ratio: <span id="results-smash-ratio"></span></p>
+                    <span>Pokémons reviewed: <span id="results-total"></span></span>
+                    <span>Pokémons I'd smash: <span id="results-smash-total"></span></span>
+                    <span>Pokémons I'd pass: <span id="results-pass-total"></span></span>
+                    <span>Ratio: <span id="results-smash-ratio"></span></span>
+                </div>
+                <div id="results-ratios">
                     <div id="results-type-ratios"></div>
                     <div id="results-gen-ratios"></div>
                 </div>
                 <div class="button-container">
+                    <button id="button-download" class="button dragon" disabled="true">Download results</button>
                     <button id="button-back-to-game" class="button normal" onclick="loadGame(random=false, back=true)">Back</button>
                     <button id="button-replay" class="button water" onclick="loadMenu(replay=true)">Replay</button>
                 </div>
