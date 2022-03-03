@@ -227,6 +227,16 @@ function passPkmn () {
 }
 
 function smashPkmn () {
+    // check if pokemon already smashed
+    let pkmnNames = domSmashGrid.childNodes
+    for (pkmnName in pkmnNames) {
+        if (pkmnName.innerHTML == capitalizeWord(currentPkmnData.name)) {
+            console.log("double found")
+            nextPkmn()
+            return
+        }
+    }
+
     // smash saves all relevant data to the stats then next pokemon
     resultsData["smash"] += 1
     resultsData["total"] += 1
