@@ -259,6 +259,7 @@ async function loadPkmnData () {
     currentPkmnData.weight = pkmnData.weight
     currentPkmnData.type1 = pkmnData.types[0].type.name
     if (pkmnData.types[1]) currentPkmnData.type2 = pkmnData.types[1].type.name
+    currentPkmnData.gen = getGenById(pkmnData.id)
 
     // ratio
     domSmashTotal.innerHTML = resultsData["smash"]
@@ -285,7 +286,32 @@ async function displayPkmnData () {
         domPkmnInfos.removeAttribute("class")
         domPkmnInfos.classList.add(currentPkmnData.type1)
     }
+    // gen
+    domPkmnGen.innerHTML = "gen " + currentPkmnData.gen
 
+}
+
+function getGenById (id) {
+    if (id <= 0) return
+    if (id <= 151) {
+        return 1
+    } else if (id <= 251) {
+        return 2
+    } else if (id <= 386) {
+        return 3
+    } else if (id <= 494) {
+        return 4
+    } else if (id <= 649) {
+        return 5
+    } else if (id <= 721) {
+        return 6
+    } else if (id <= 809) {
+        return 7
+    } else if (id <= 898) {
+        return 8
+    } else {
+        return
+    }
 }
 
 // RESULTS FUNCTIONS
