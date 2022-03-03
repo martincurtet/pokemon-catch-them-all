@@ -159,6 +159,12 @@ body {
     display: block;
 }
 
+#footer {
+    text-align: right;
+    width: 100%;
+    padding: 5px;
+}
+
 /* SPRITES SIZE */
 .bigger-sprite {
     height: var(--bigger-sprite);
