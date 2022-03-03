@@ -8,6 +8,7 @@ const gen6Array = createIntArray(650, 721)
 const gen7Array = createIntArray(722, 809)
 const gen8Array = createIntArray(810, 898)
 
+const typesArray = [ "normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"]
 const colorDict = {
     "normal": "#A8A77A",
     "fire": "#EE8130",
@@ -39,7 +40,43 @@ var resultsData = {
     "smash": 0,
     "pass": 0,
     "smashRatio": 0,
-    "total": 0
+    "total": 0,
+    "normal": 0,
+    "normalRatio": 0,
+    "fire": 0,
+    "fireRatio": 0,
+    "water": 0,
+    "waterRatio": 0,
+    "electric": 0,
+    "electricRatio": 0,
+    "grass": 0,
+    "grassRatio": 0,
+    "ice": 0,
+    "iceRatio": 0,
+    "fighting": 0,
+    "figthingRatio": 0,
+    "poison": 0,
+    "poisonRatio": 0,
+    "ground": 0,
+    "groundRatio": 0,
+    "flying": 0,
+    "flyingRatio": 0,
+    "psychic": 0,
+    "psychicRatio": 0,
+    "bug": 0,
+    "bugRatio": 0,
+    "rock": 0,
+    "rockRatio": 0,
+    "ghost": 0,
+    "ghostRatio": 0,
+    "dragon": 0,
+    "dragonRatio": 0,
+    "dark": 0,
+    "darkRatio": 0,
+    "steel": 0,
+    "steelRatio": 0,
+    "fairy": 0,
+    "fairyRatio": 0
 }
 
 // DOM ELEMENTS
@@ -73,6 +110,7 @@ const domResultsTotal = document.getElementById("results-total")
 const domResultsSmashTotal = document.getElementById("results-smash-total")
 const domResultsPassTotal = document.getElementById("results-pass-total")
 const domResultsSmashRatio = document.getElementById("results-smash-ratio")
+const domResultsTypeRatios = document.getElementById("results-type-ratios")
 const domButtonBackToGame = document.getElementById("button-back-to-game")
 const domButtonReplay = document.getElementById("button-replay")
 
@@ -162,6 +200,13 @@ function smashPkmn () {
     // smash saves all relevant data to the stats then next pokemon
     resultsData["smash"] += 1
     resultsData["total"] += 1
+    if (currentPkmnData.type2) {
+        resultsData[currentPkmnData.type1] += 0.5
+        resultsData[currentPkmnData.type2] += 0.5
+
+    } else {
+        resultsData[currentPkmnData.type1] += 1
+    }
     updateRatios()
     nextPkmn()
 }
@@ -169,6 +214,27 @@ function smashPkmn () {
 function updateRatios () {
     // smash ratio
     resultsData["smashRatio"] = Math.round(100 * resultsData["smash"] / resultsData["total"])
+
+    // types ratio
+    resultsData["normalRatio"] = Math.round(100 * resultsData["normal"] / resultsData["total"])
+    resultsData["fireRatio"] = Math.round(100 * resultsData["fire"] / resultsData["total"])
+    resultsData["waterRatio"] = Math.round(100 * resultsData["water"] / resultsData["total"])
+    resultsData["electricRatio"] = Math.round(100 * resultsData["electric"] / resultsData["total"])
+    resultsData["grassRatio"] = Math.round(100 * resultsData["grass"] / resultsData["total"])
+    resultsData["iceRatio"] = Math.round(100 * resultsData["ice"] / resultsData["total"])
+    resultsData["fightingRatio"] = Math.round(100 * resultsData["fighting"] / resultsData["total"])
+    resultsData["poisonRatio"] = Math.round(100 * resultsData["poison"] / resultsData["total"])
+    resultsData["groundRatio"] = Math.round(100 * resultsData["ground"] / resultsData["total"])
+    resultsData["flyingRatio"] = Math.round(100 * resultsData["flying"] / resultsData["total"])
+    resultsData["psychicRatio"] = Math.round(100 * resultsData["psychic"] / resultsData["total"])
+    resultsData["bugRatio"] = Math.round(100 * resultsData["bug"] / resultsData["total"])
+    resultsData["rockRatio"] = Math.round(100 * resultsData["rock"] / resultsData["total"])
+    resultsData["ghostRatio"] = Math.round(100 * resultsData["ghost"] / resultsData["total"])
+    resultsData["dragonRatio"] = Math.round(100 * resultsData["dragon"] / resultsData["total"])
+    resultsData["darkRatio"] = Math.round(100 * resultsData["dark"] / resultsData["total"])
+    resultsData["steelRatio"] = Math.round(100 * resultsData["steel"] / resultsData["total"])
+    resultsData["fairyRatio"] = Math.round(100 * resultsData["fairy"] / resultsData["total"])
+
 }
 
 async function fetchPkmnData () {
@@ -220,6 +286,7 @@ async function displayPkmnData () {
 
 // RESULTS FUNCTIONS
 function loadResultsData () {
+    // smash pass total and ratio
     domResultsTotal.innerHTML = resultsData["total"]
     domResultsSmashTotal.innerHTML = resultsData["smash"]
     domResultsPassTotal.innerHTML = resultsData["pass"]
@@ -227,6 +294,34 @@ function loadResultsData () {
         domResultsSmashRatio.innerHTML = "<" + resultsData["smashRatio"] + "%"
     } else {
         domResultsSmashRatio.innerHTML = resultsData["smashRatio"] + "%"
+    }
+
+    // type ratios
+    domResultsTypeRatios.innerHTML = ""
+    for (let i= 0; i < typesArray.length; i++) {
+        let element = document.createElement("span")
+        element.setAttribute("value", resultsData[typesArray[i]])
+        element.style.color = "var(--" + typesArray[i] + "-color)"
+        element.innerHTML = capitalizeWord(typesArray[i]) + ": " + String(resultsData[typesArray[i] + "Ratio"]) + "%"
+        if (i == 0) {
+            // first element
+            domResultsTypeRatios.appendChild(element)
+        } else if (element.getAttribute("value") > domResultsTypeRatios.firstChild.getAttribute("value")) {
+            // if the current type is higher than the first
+            domResultsTypeRatios.insertBefore(element, domResultsTypeRatios.firstChild)
+        } else {
+            // go through the children to find the correct place
+            let added = false
+            for (let j = 1; j < domResultsTypeRatios.childElementCount; j++) {
+                if (element.getAttribute("value") > domResultsTypeRatios.children[j].getAttribute("value")) {
+                    domResultsTypeRatios.insertBefore(element, domResultsTypeRatios.children[j])
+                    added = true
+                }
+            }
+            if (!added) {
+                domResultsTypeRatios.appendChild(element)
+            }
+        }
     }
 }
 
@@ -286,8 +381,45 @@ function clearResultsData () {
     resultsData["pass"] = 0
     resultsData["total"] = 0
     resultsData["smashRatio"] = 0
+    resultsData["normal"] = 0
+    resultsData["normalRatio"] = 0
+    resultsData["fire"] = 0
+    resultsData["fireRatio"] = 0
+    resultsData["water"] = 0
+    resultsData["waterRatio"] = 0
+    resultsData["electric"] = 0
+    resultsData["electricRatio"] = 0
+    resultsData["grass"] = 0
+    resultsData["grassRatio"] = 0
+    resultsData["ice"] = 0
+    resultsData["iceRatio"] = 0
+    resultsData["fighting"] = 0
+    resultsData["figthingRatio"] = 0
+    resultsData["poison"] = 0
+    resultsData["poisonRatio"] = 0
+    resultsData["ground"] = 0
+    resultsData["groundRatio"] = 0
+    resultsData["flying"] = 0
+    resultsData["flyingRatio"] = 0
+    resultsData["psychic"] = 0
+    resultsData["psychicRatio"] = 0
+    resultsData["bug"] = 0
+    resultsData["bugRatio"] = 0
+    resultsData["rock"] = 0
+    resultsData["rockRatio"] = 0
+    resultsData["ghost"] = 0
+    resultsData["ghostRatio"] = 0
+    resultsData["dragon"] = 0
+    resultsData["dragonRatio"] = 0
+    resultsData["dark"] = 0
+    resultsData["darkRatio"] = 0
+    resultsData["steel"] = 0
+    resultsData["steelRatio"] = 0
+    resultsData["fairy"] = 0
+    resultsData["fairyRatio"] = 0
 
     // dom
+    domResultsTypeRatios.innerHTML = ""
     loadResultsData()
 }
 
