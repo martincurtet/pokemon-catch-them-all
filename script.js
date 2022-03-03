@@ -38,6 +38,7 @@ var currentPkmnData = {}
 var resultsData = {
     "smash": 0,
     "pass": 0,
+    "smashRatio": 0,
     "total": 0
 }
 
@@ -61,6 +62,9 @@ const domPkmnName = document.getElementById("pokemon-name")
 const domPkmnSize = document.getElementById("pokemon-size")
 const domPkmnTypes = document.getElementById("pokemon-types")
 const domPkmnGen = document.getElementById("pokemon-gen")
+const domSmashTotal = document.getElementById("smash-total")
+const domSmashRatio = document.getElementById("smash-ratio")
+const domPassTotal = document.getElementById("pass-total")
 const domButtonCheck = document.getElementById("button-check")
 const domButtonEnd = document.getElementById("button-end")
 
@@ -68,6 +72,7 @@ const domResults = document.getElementById("results")
 const domResultsTotal = document.getElementById("results-total")
 const domResultsSmashTotal = document.getElementById("results-smash-total")
 const domResultsPassTotal = document.getElementById("results-pass-total")
+const domResultsSmashRatio = document.getElementById("results-smash-ratio")
 const domButtonBackToGame = document.getElementById("button-back-to-game")
 const domButtonReplay = document.getElementById("button-replay")
 
@@ -150,13 +155,20 @@ function passPkmn () {
     // pass just skips the pokemon but adds the number to the total
     resultsData["pass"] += 1
     resultsData["total"] += 1
+    updateRatios()
     nextPkmn()
 }
 function smashPkmn () {
     // smash saves all relevant data to the stats then next pokemon
     resultsData["smash"] += 1
     resultsData["total"] += 1
+    updateRatios()
     nextPkmn()
+}
+
+function updateRatios () {
+    // smash ratio
+    resultsData["smashRatio"] = Math.round(100 * resultsData["smash"] / resultsData["total"])
 }
 
 async function fetchPkmnData () {
@@ -177,6 +189,11 @@ async function loadPkmnData () {
     currentPkmnData.weight = pkmnData.weight
     currentPkmnData.type1 = pkmnData.types[0].type.name
     if (pkmnData.types[1]) currentPkmnData.type2 = pkmnData.types[1].type.name
+
+    // ratio
+    domSmashTotal.innerHTML = resultsData["smash"]
+    domSmashRatio.innerHTML = resultsData["smashRatio"]
+    domPassTotal.innerHTML = resultsData["pass"]
 }
 
 async function displayPkmnData () {
@@ -187,8 +204,6 @@ async function displayPkmnData () {
     domPkmnName.innerHTML = currentPkmnData.name
     domPkmnSize.innerHTML = String(parseInt(currentPkmnData.height) / 10) + "m - " + String(parseInt(currentPkmnData.weight) /10) + "kg"
     // types and background color
-    console.log("type2: " + currentPkmnData.type2)
-    console.log(currentPkmnData.type2 == undefined)
     if (currentPkmnData.type2) {
         domPkmnTypes.innerHTML = currentPkmnData.type1 + " - " + currentPkmnData.type2
         domPkmnInfos.removeAttribute("class")
@@ -208,6 +223,11 @@ function loadResultsData () {
     domResultsTotal.innerHTML = resultsData["total"]
     domResultsSmashTotal.innerHTML = resultsData["smash"]
     domResultsPassTotal.innerHTML = resultsData["pass"]
+    if (resultsData["smashRatio"] == 0 && resultsData["smash"] != 0) {
+        domResultsSmashRatio.innerHTML = "<" + resultsData["smashRatio"] + "%"
+    } else {
+        domResultsSmashRatio.innerHTML = resultsData["smashRatio"] + "%"
+    }
 }
 
 // NAVIGATION FUNCTIONS
@@ -265,6 +285,7 @@ function clearResultsData () {
     resultsData["smash"] = 0
     resultsData["pass"] = 0
     resultsData["total"] = 0
+    resultsData["smashRatio"] = 0
 
     // dom
     loadResultsData()
