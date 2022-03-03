@@ -51,8 +51,8 @@
                 </div>
                 <p>Total: <span id="genTotal">0</span></p>
                 <div id="menu-buttons" class="button-container">
-                    <button class="button" onclick="loadGame()">Pokédex order</button>
-                    <button class="button" onclick="loadGame(random=true)">Random</button>
+                    <button class="button normal" onclick="loadGame()">Pokédex order</button>
+                    <button class="button psy" onclick="loadGame(random=true)">Random</button>
                 </div>
             </div><!-- END MENU -->
 
@@ -67,15 +67,15 @@
                     <span id="pokemon-gen"></span>
                 </div>
                 <div class="button-container">
-                    <button class="button" onclick="smashPkmn()">Smash</button>
-                    <button class="button" onclick="passPkmn()">Pass</button>
+                    <button class="button grass" onclick="smashPkmn()">Smash</button>
+                    <button class="button fighting" onclick="passPkmn()">Pass</button>
                 </div>
                 <div class="button-container">
                     <!-- <button onclick="prevPkmn()">Previous</button> -->
                     <!-- <button onclick="nextPkmn()">Next</button> -->
-                    <button id="button-check" class="button" onclick="loadResults()" disabled="true">Check Results</button>
-                    <button id="button-end" class="button" onclick="loadResults(end=true)" disabled="true">End now</button>
-                    <button class="button" onclick="loadMenu()">Back</button>
+                    <button id="button-check" class="button steel" onclick="loadResults()" disabled="true">Check Results</button>
+                    <button id="button-end" class="button steel" onclick="loadResults(end=true)" disabled="true">End now</button>
+                    <button class="button normal" onclick="loadMenu()">Back</button>
                 </div>
             </div><!-- END GAME-->
 
@@ -87,8 +87,8 @@
                     <p>Pokémons I'd pass: <span id="results-pass-total"></span></p>
                 </div>
                 <div class="button-container">
-                    <button id="button-back-to-game" class="button" onclick="loadGame()">Back</button>
-                    <button id="button-replay" class="button" onclick="loadMenu(replay=true)">Replay</button>
+                    <button id="button-back-to-game" class="button normal" onclick="loadGame()">Back</button>
+                    <button id="button-replay" class="button water" onclick="loadMenu(replay=true)">Replay</button>
                 </div>
             </div><!-- END RESULTS -->
         </div><!-- END APP -->

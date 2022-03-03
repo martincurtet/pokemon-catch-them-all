@@ -11,6 +11,26 @@
     --big-sprite: 128px;
     --medium-sprite: 64px;
     --small-sprite: 32px;
+
+    /* COLORS */
+    --normal-color: #A8A77A;
+    --fire-color:  #EE8130;
+    --water-color:  #6390F0;
+    --electric-color:  #F7D02C;
+    --grass-color:  #7AC74C;
+    --ice-color:  #96D9D6;
+    --fighting-color:  #C22E28;
+    --poison-color:  #A33EA1;
+    --ground-color:  #E2BF65;
+    --flying-color:  #A98FF3;
+    --psychic-color:  #F95587;
+    --bug-color:  #A6B91A;
+    --rock-color:  #B6A136;
+    --ghost-color:  #735797;
+    --dragon-color:  #6F35FC;
+    --dark-color:  #705746;
+    --steel-color:  #B7B7CE;
+    --fairy-color:  #D685AD;
 }
 
 body {
@@ -52,9 +72,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    padding: 5px;
-
-    width: 200px;
+    width: 250px;
     height: 300px;
 
     border: solid 1px black;
@@ -113,6 +131,36 @@ body {
 
 .button {
     cursor: pointer;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.button:hover {
+    filter: brightness(85%)
+}
+
+.normal {
+    background-color: var(--normal-color);
+}
+
+.psy {
+    background-color: var(--psychic-color);
+}
+
+.grass {
+    background-color: var(--grass-color);
+}
+
+.fighting {
+    background-color: var(--fighting-color);
+}
+
+.steel {
+    background-color: var(--steel-color);
+}
+
+.water {
+    background-color: var(--water-color);
 }
 
 .button:disabled {
