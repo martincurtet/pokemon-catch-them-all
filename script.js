@@ -9,6 +9,7 @@ const gen7Array = createIntArray(722, 809)
 const gen8Array = createIntArray(810, 898)
 
 const typesArray = [ "normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"]
+const gensArray = ["gen1", "gen2", "gen3", "gen4", "gen5", "gen6", "gen7", "gen8"]
 const colorDict = {
     "normal": "#A8A77A",
     "fire": "#EE8130",
@@ -76,7 +77,23 @@ var resultsData = {
     "steel": 0,
     "steelRatio": 0,
     "fairy": 0,
-    "fairyRatio": 0
+    "fairyRatio": 0,
+    "gen1": 0,
+    "gen1Ratio":0,
+    "gen2": 0,
+    "gen2Ratio":0,
+    "gen3": 0,
+    "gen3Ratio":0,
+    "gen4": 0,
+    "gen4Ratio":0,
+    "gen5": 0,
+    "gen5Ratio":0,
+    "gen6": 0,
+    "gen6Ratio":0,
+    "gen7": 0,
+    "gen7Ratio":0,
+    "gen8": 0,
+    "gen8Ratio":0,
 }
 
 // DOM ELEMENTS
@@ -111,6 +128,7 @@ const domResultsSmashTotal = document.getElementById("results-smash-total")
 const domResultsPassTotal = document.getElementById("results-pass-total")
 const domResultsSmashRatio = document.getElementById("results-smash-ratio")
 const domResultsTypeRatios = document.getElementById("results-type-ratios")
+const domResultsGenRatios = document.getElementById("results-gen-ratios")
 const domButtonBackToGame = document.getElementById("button-back-to-game")
 const domButtonReplay = document.getElementById("button-replay")
 
@@ -211,6 +229,7 @@ function smashPkmn () {
     } else {
         resultsData[currentPkmnData.type1] += 1
     }
+    resultsData["gen" + domPkmnGen.innerHTML.slice(-1)] += 1
     updateRatios()
     nextPkmn()
 }
@@ -219,7 +238,7 @@ function updateRatios () {
     // smash ratio
     resultsData["smashRatio"] = Math.round(100 * resultsData["smash"] / resultsData["total"])
 
-    // types ratio
+    // type ratios
     resultsData["normalRatio"] = Math.round(100 * resultsData["normal"] / resultsData["total"])
     resultsData["fireRatio"] = Math.round(100 * resultsData["fire"] / resultsData["total"])
     resultsData["waterRatio"] = Math.round(100 * resultsData["water"] / resultsData["total"])
@@ -238,6 +257,16 @@ function updateRatios () {
     resultsData["darkRatio"] = Math.round(100 * resultsData["dark"] / resultsData["total"])
     resultsData["steelRatio"] = Math.round(100 * resultsData["steel"] / resultsData["total"])
     resultsData["fairyRatio"] = Math.round(100 * resultsData["fairy"] / resultsData["total"])
+
+    // gen ratios
+    resultsData["gen1Ratio"] = Math.round(100 * resultsData["gen1"] / resultsData["total"])
+    resultsData["gen2Ratio"] = Math.round(100 * resultsData["gen2"] / resultsData["total"])
+    resultsData["gen3Ratio"] = Math.round(100 * resultsData["gen3"] / resultsData["total"])
+    resultsData["gen4Ratio"] = Math.round(100 * resultsData["gen4"] / resultsData["total"])
+    resultsData["gen5Ratio"] = Math.round(100 * resultsData["gen5"] / resultsData["total"])
+    resultsData["gen6Ratio"] = Math.round(100 * resultsData["gen6"] / resultsData["total"])
+    resultsData["gen7Ratio"] = Math.round(100 * resultsData["gen7"] / resultsData["total"])
+    resultsData["gen8Ratio"] = Math.round(100 * resultsData["gen8"] / resultsData["total"])
 
 }
 
@@ -288,7 +317,6 @@ async function displayPkmnData () {
     }
     // gen
     domPkmnGen.innerHTML = "gen " + currentPkmnData.gen
-
 }
 
 function getGenById (id) {
@@ -351,6 +379,34 @@ function loadResultsData () {
             }
             if (!added) {
                 domResultsTypeRatios.appendChild(element)
+            }
+        }
+    }
+
+    // gen ratios
+    domResultsGenRatios.innerHTML = ""
+    for (let i= 0; i < gensArray.length; i++) {
+        let element = document.createElement("span")
+        element.setAttribute("value", resultsData[gensArray[i]])
+        element.innerHTML = "Gen " + (i + 1) + ": " + String(resultsData[gensArray[i] + "Ratio"]) + "%"
+        if (i == 0) {
+            // first element
+            domResultsGenRatios.appendChild(element)
+        } else if (element.getAttribute("value") > domResultsGenRatios.firstChild.getAttribute("value")) {
+            // if the current type is higher than the first
+            domResultsGenRatios.insertBefore(element, domResultsGenRatios.firstChild)
+        } else {
+            // go through the children to find the correct place
+            let added = false
+            for (let j = 1; j < domResultsGenRatios.childElementCount; j++) {
+                if (element.getAttribute("value") > domResultsGenRatios.children[j].getAttribute("value")) {
+                    domResultsGenRatios.insertBefore(element, domResultsGenRatios.children[j])
+                    added = true
+                    break;
+                }
+            }
+            if (!added) {
+                domResultsGenRatios.appendChild(element)
             }
         }
     }
@@ -448,9 +504,26 @@ function clearResultsData () {
     resultsData["steelRatio"] = 0
     resultsData["fairy"] = 0
     resultsData["fairyRatio"] = 0
+    resultsData["gen1"] = 0
+    resultsData["gen1Ratio"] = 0
+    resultsData["gen2"] = 0
+    resultsData["gen2Ratio"] = 0
+    resultsData["gen3"] = 0
+    resultsData["gen3Ratio"] = 0
+    resultsData["gen4"] = 0
+    resultsData["gen4Ratio"] = 0
+    resultsData["gen5"] = 0
+    resultsData["gen5Ratio"] = 0
+    resultsData["gen6"] = 0
+    resultsData["gen6Ratio"] = 0
+    resultsData["gen7"] = 0
+    resultsData["gen7Ratio"] = 0
+    resultsData["gen8"] = 0
+    resultsData["gen8Ratio"] = 0
 
     // dom
     domResultsTypeRatios.innerHTML = ""
+    domResultsGenRatios.innerHTML = ""
     loadResultsData()
 }
 
