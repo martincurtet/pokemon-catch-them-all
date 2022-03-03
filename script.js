@@ -430,6 +430,12 @@ function loadGame (random=false, back=false) {
     domResults.style.display = "none"
 
     if (!back) calcPkmnIdsArray(random)
+
+    // disable buttons in case of reload
+    if (resultsData["total"] == 0) {
+        domButtonCheck.disabled = true
+        domButtonEnd.disabled = true
+    }
 }
 
 function loadResults (end=false) {
