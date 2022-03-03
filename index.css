@@ -98,6 +98,12 @@ body {
     align-items: center;
 }
 
+#results-type-ratios {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
 #button-back-to-menu {
     display: block;
 }
