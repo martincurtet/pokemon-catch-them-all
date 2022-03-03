@@ -130,6 +130,7 @@ const domResultsPassTotal = document.getElementById("results-pass-total")
 const domResultsSmashRatio = document.getElementById("results-smash-ratio")
 const domResultsTypeRatios = document.getElementById("results-type-ratios")
 const domResultsGenRatios = document.getElementById("results-gen-ratios")
+const domResultsSmashList = document.getElementById("results-smash-list")
 const domButtonDownload = document.getElementById("button-download")
 const domButtonBackToGame = document.getElementById("button-back-to-game")
 const domButtonReplay = document.getElementById("button-replay")
@@ -487,6 +488,7 @@ function clearGameData () {
     domPkmnSize.innerHTML = ""
     domPkmnTypes.innerHTML = ""
     domPkmnGen.innerHTML = ""
+    domSmashList.innerHTML = ""
     domButtonCheck.disabled = true
     domButtonEnd.disabled = true
 }
