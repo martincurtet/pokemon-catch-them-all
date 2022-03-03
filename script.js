@@ -433,6 +433,9 @@ function loadResultsData () {
             }
         }
     }
+
+    // smash list
+    domResultsSmashList.innerHTML = domSmashList.innerHTML
 }
 
 // NAVIGATION FUNCTIONS
@@ -555,6 +558,7 @@ function clearResultsData () {
     // dom
     domResultsTypeRatios.innerHTML = ""
     domResultsGenRatios.innerHTML = ""
+    domResultsSmashList.innerHTML = ""
     loadResultsData()
 }
 
