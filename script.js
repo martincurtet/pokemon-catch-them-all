@@ -177,13 +177,15 @@ function loadResultsData () {
 }
 
 // NAVIGATION FUNCTIONS
-function loadMenu () {
-    domMenu.style.display = "flex",
-    domGame.style.display = "none"
-    domResults.style.display = "none"
-
-    clearGameData()
-    clearResultsData()
+function loadMenu (replay=false) {
+    if (replay || confirm("This will erase your progress, do you want to continue?")) {
+        domMenu.style.display = "flex",
+        domGame.style.display = "none"
+        domResults.style.display = "none"
+    
+        clearGameData()
+        clearResultsData()
+    }
 }
 
 function loadGame (random=false) {
