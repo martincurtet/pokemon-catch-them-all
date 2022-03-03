@@ -151,10 +151,6 @@ body {
     gap: var(--results-line-spacing);
 }
 
-#results-grid {
-    width: 100%;
-}
-
 #button-back-to-menu {
     display: block;
 }
