@@ -75,7 +75,7 @@ body {
     width: 250px;
     height: 300px;
 
-    border: solid 1px black;
+    border-radius: 20px;
 }
 
 /* RESULTS */
@@ -143,24 +143,72 @@ body {
     background-color: var(--normal-color);
 }
 
-.psy {
-    background-color: var(--psychic-color);
+.fire {
+    background-color: var(--fire-color);
+}
+
+.water {
+    background-color: var(--water-color);
+}
+
+.electric {
+    background-color: var(--electric-color);
 }
 
 .grass {
     background-color: var(--grass-color);
 }
 
+.ice {
+    background-color: var(--ice-color);
+}
+
 .fighting {
     background-color: var(--fighting-color);
+}
+
+.poison {
+    background-color: var(--poison-color);
+}
+
+.ground {
+    background-color: var(--ground-color);
+}
+
+.flying {
+    background-color: var(--flying-color);
+}
+
+.psychic {
+    background-color: var(--psychic-color);
+}
+
+.bug {
+    background-color: var(--bug-color);
+}
+
+.rock {
+    background-color: var(--rock-color);
+}
+
+.ghost {
+    background-color: var(--ghost-color);
+}
+
+.dragon {
+    background-color: var(--dragon-color);
+}
+
+.dark {
+    background-color: var(--dark-color);
 }
 
 .steel {
     background-color: var(--steel-color);
 }
 
-.water {
-    background-color: var(--water-color);
+.fairy {
+    background-color: var(--fairy-color);
 }
 
 .button:disabled {

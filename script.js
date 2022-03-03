@@ -8,6 +8,27 @@ const gen6Array = createIntArray(650, 721)
 const gen7Array = createIntArray(722, 809)
 const gen8Array = createIntArray(810, 898)
 
+const colorDict = {
+    "normal": "#A8A77A",
+    "fire": "#EE8130",
+    "water": "#6390F0",
+    "electric": "#F7D02C",
+    "grass": "#7AC74C",
+    "ice": "#96D9D6",
+    "fighting": "#C22E28",
+    "poison": "#A33EA1",
+    "ground": "#E2BF65",
+    "flying": "#A98FF3",
+    "psychic": "#F95587",
+    "bug": "#A6B91A",
+    "rock": "#B6A136",
+    "ghost": "#735797",
+    "dragon": "#6F35FC",
+    "dark": "#705746",
+    "steel": "#B7B7CE",
+    "fairy": "#D685AD"
+}
+
 // VARIABLES
 var genSelections = [true, true, true, true, true, true, true, true]
 var pkmnIdsArray = []
@@ -165,8 +186,21 @@ async function displayPkmnData () {
     domPkmnSprite.setAttribute("src", currentPkmnData.sprite)
     domPkmnName.innerHTML = currentPkmnData.name
     domPkmnSize.innerHTML = String(parseInt(currentPkmnData.height) / 10) + "m - " + String(parseInt(currentPkmnData.weight) /10) + "kg"
-    domPkmnTypes.innerHTML = currentPkmnData.type1
-    if (currentPkmnData.type2) domPkmnTypes.innerHTML += " - " + currentPkmnData.type2
+    // types and background color
+    console.log("type2: " + currentPkmnData.type2)
+    console.log(currentPkmnData.type2 == undefined)
+    if (currentPkmnData.type2) {
+        domPkmnTypes.innerHTML = currentPkmnData.type1 + " - " + currentPkmnData.type2
+        domPkmnInfos.removeAttribute("class")
+        // domPkmnInfos.classList.add(currentPkmnData.type1)
+        domPkmnInfos.style.backgroundImage = "linear-gradient(" + colorDict[currentPkmnData.type1] + ", " + colorDict[currentPkmnData.type2] + ")"
+    } else {
+        domPkmnTypes.innerHTML = currentPkmnData.type1
+        domPkmnInfos.style.backgroundImage = ""
+        domPkmnInfos.removeAttribute("class")
+        domPkmnInfos.classList.add(currentPkmnData.type1)
+    }
+
 }
 
 // RESULTS FUNCTIONS
