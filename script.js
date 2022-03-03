@@ -424,12 +424,12 @@ function loadMenu (replay=false) {
     }
 }
 
-function loadGame (random=false) {
+function loadGame (random=false, back=false) {
     domMenu.style.display = "none",
     domGame.style.display = "flex"
     domResults.style.display = "none"
 
-    calcPkmnIdsArray(random)
+    if (!back) calcPkmnIdsArray(random)
 }
 
 function loadResults (end=false) {
