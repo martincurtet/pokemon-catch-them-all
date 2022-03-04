@@ -20,7 +20,14 @@ The website is hosted on Netlify.
 
 # VERSIONS
 
-## Version 1.0.0
+### Version 1.0.1 - 2022/03/04
+- Fix: Double entry now less possible
+- Fix: Ratio now calculated correctly
+- Results: Ratio order is now fixed
+- Results: Colored text is now more readable
+- Pokémon is already plural
+
+## Version 1.0.0 - 2022/03/03
 - Menu: Generation filter
 - Gamemode: Pokédex order
 - Gamemode: Random
@@ -31,3 +38,4 @@ The website is hosted on Netlify.
 - Results: Generation ratios
 - Results: Pokemon name list
 - Results: Downloadable results as a png
+
