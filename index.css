@@ -14,6 +14,10 @@
 
     /* COLORS */
     --background-color: #CCCCCC;
+    --font-color: #363636;
+
+    --background-color-dark: #363636;
+    --font-color-dark: #CCCCCC;
 
     --normal-color: #A8A77A;
     --fire-color:  #EE8130;
@@ -46,7 +50,15 @@ body {
     margin: 0;
     padding: 0;
 
+    /* background-image: linear-gradient(to right, var(--background-color), white, var(--background-color)); */
     background-color: var(--background-color);
+    color: var(--font-color);
+}
+
+/* THEMES */
+.theme-dark {
+    background-color: var(--background-color-dark);
+    color: var(--font-color-dark);
 }
 
 /* IDS */
@@ -87,6 +99,8 @@ body {
     cursor: pointer;
 
     border-radius: 20px;
+
+    color: var(--font-color);
 }
 
 #pokemon-info:hover {
@@ -165,6 +179,11 @@ body {
     text-align: right;
     width: 100%;
     padding: 5px;
+}
+
+#footer a {
+    color: var(--font-color);
+    text-decoration: none;
 }
 
 /* SPRITES SIZE */

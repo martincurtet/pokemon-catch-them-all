@@ -97,6 +97,10 @@ var resultsData = {
 }
 
 // DOM ELEMENTS
+const domBody = document.body
+
+const domButtonTheme = document.getElementById("button-theme")
+
 const domTitle = document.getElementById("app-title")
 const domMenu = document.getElementById("menu")
 const domGen1 = document.getElementById("gen1")
@@ -592,6 +596,14 @@ function printResults () {
         domDownloadLink.download = "results.png"
         domDownloadLink.click()
     })
+}
+
+// THEMES
+function toggleTheme() {
+    domBody.classList.toggle("theme-dark")
+    domButtonTheme.classList.toggle("dark")
+    domButtonTheme.classList.toggle("electric")
+    domResultsPicture.classList.toggle("theme-dark")
 }
 
 // MISC FUNCTIONS
