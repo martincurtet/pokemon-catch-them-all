@@ -231,7 +231,6 @@ function smashPkmn () {
     let pkmnNames = domSmashGrid.childNodes
     for (pkmnName in pkmnNames) {
         if (pkmnName.innerHTML == capitalizeWord(currentPkmnData.name)) {
-            console.log("double found")
             nextPkmn()
             return
         }
@@ -263,34 +262,34 @@ function updateRatios () {
     resultsData["smashRatio"] = Math.round(100 * resultsData["smash"] / resultsData["total"])
 
     // type ratios
-    resultsData["normalRatio"] = Math.round(100 * resultsData["normal"] / resultsData["total"])
-    resultsData["fireRatio"] = Math.round(100 * resultsData["fire"] / resultsData["total"])
-    resultsData["waterRatio"] = Math.round(100 * resultsData["water"] / resultsData["total"])
-    resultsData["electricRatio"] = Math.round(100 * resultsData["electric"] / resultsData["total"])
-    resultsData["grassRatio"] = Math.round(100 * resultsData["grass"] / resultsData["total"])
-    resultsData["iceRatio"] = Math.round(100 * resultsData["ice"] / resultsData["total"])
-    resultsData["fightingRatio"] = Math.round(100 * resultsData["fighting"] / resultsData["total"])
-    resultsData["poisonRatio"] = Math.round(100 * resultsData["poison"] / resultsData["total"])
-    resultsData["groundRatio"] = Math.round(100 * resultsData["ground"] / resultsData["total"])
-    resultsData["flyingRatio"] = Math.round(100 * resultsData["flying"] / resultsData["total"])
-    resultsData["psychicRatio"] = Math.round(100 * resultsData["psychic"] / resultsData["total"])
-    resultsData["bugRatio"] = Math.round(100 * resultsData["bug"] / resultsData["total"])
-    resultsData["rockRatio"] = Math.round(100 * resultsData["rock"] / resultsData["total"])
-    resultsData["ghostRatio"] = Math.round(100 * resultsData["ghost"] / resultsData["total"])
-    resultsData["dragonRatio"] = Math.round(100 * resultsData["dragon"] / resultsData["total"])
-    resultsData["darkRatio"] = Math.round(100 * resultsData["dark"] / resultsData["total"])
-    resultsData["steelRatio"] = Math.round(100 * resultsData["steel"] / resultsData["total"])
-    resultsData["fairyRatio"] = Math.round(100 * resultsData["fairy"] / resultsData["total"])
+    resultsData["normalRatio"] = Math.round(100 * resultsData["normal"] / resultsData["smash"])
+    resultsData["fireRatio"] = Math.round(100 * resultsData["fire"] / resultsData["smash"])
+    resultsData["waterRatio"] = Math.round(100 * resultsData["water"] / resultsData["smash"])
+    resultsData["electricRatio"] = Math.round(100 * resultsData["electric"] / resultsData["smash"])
+    resultsData["grassRatio"] = Math.round(100 * resultsData["grass"] / resultsData["smash"])
+    resultsData["iceRatio"] = Math.round(100 * resultsData["ice"] / resultsData["smash"])
+    resultsData["fightingRatio"] = Math.round(100 * resultsData["fighting"] / resultsData["smash"])
+    resultsData["poisonRatio"] = Math.round(100 * resultsData["poison"] / resultsData["smash"])
+    resultsData["groundRatio"] = Math.round(100 * resultsData["ground"] / resultsData["smash"])
+    resultsData["flyingRatio"] = Math.round(100 * resultsData["flying"] / resultsData["smash"])
+    resultsData["psychicRatio"] = Math.round(100 * resultsData["psychic"] / resultsData["smash"])
+    resultsData["bugRatio"] = Math.round(100 * resultsData["bug"] / resultsData["smash"])
+    resultsData["rockRatio"] = Math.round(100 * resultsData["rock"] / resultsData["smash"])
+    resultsData["ghostRatio"] = Math.round(100 * resultsData["ghost"] / resultsData["smash"])
+    resultsData["dragonRatio"] = Math.round(100 * resultsData["dragon"] / resultsData["smash"])
+    resultsData["darkRatio"] = Math.round(100 * resultsData["dark"] / resultsData["smash"])
+    resultsData["steelRatio"] = Math.round(100 * resultsData["steel"] / resultsData["smash"])
+    resultsData["fairyRatio"] = Math.round(100 * resultsData["fairy"] / resultsData["smash"])
 
     // gen ratios
-    resultsData["gen1Ratio"] = Math.round(100 * resultsData["gen1"] / resultsData["total"])
-    resultsData["gen2Ratio"] = Math.round(100 * resultsData["gen2"] / resultsData["total"])
-    resultsData["gen3Ratio"] = Math.round(100 * resultsData["gen3"] / resultsData["total"])
-    resultsData["gen4Ratio"] = Math.round(100 * resultsData["gen4"] / resultsData["total"])
-    resultsData["gen5Ratio"] = Math.round(100 * resultsData["gen5"] / resultsData["total"])
-    resultsData["gen6Ratio"] = Math.round(100 * resultsData["gen6"] / resultsData["total"])
-    resultsData["gen7Ratio"] = Math.round(100 * resultsData["gen7"] / resultsData["total"])
-    resultsData["gen8Ratio"] = Math.round(100 * resultsData["gen8"] / resultsData["total"])
+    resultsData["gen1Ratio"] = Math.round(100 * resultsData["gen1"] / resultsData["smash"])
+    resultsData["gen2Ratio"] = Math.round(100 * resultsData["gen2"] / resultsData["smash"])
+    resultsData["gen3Ratio"] = Math.round(100 * resultsData["gen3"] / resultsData["smash"])
+    resultsData["gen4Ratio"] = Math.round(100 * resultsData["gen4"] / resultsData["smash"])
+    resultsData["gen5Ratio"] = Math.round(100 * resultsData["gen5"] / resultsData["smash"])
+    resultsData["gen6Ratio"] = Math.round(100 * resultsData["gen6"] / resultsData["smash"])
+    resultsData["gen7Ratio"] = Math.round(100 * resultsData["gen7"] / resultsData["smash"])
+    resultsData["gen8Ratio"] = Math.round(100 * resultsData["gen8"] / resultsData["smash"])
 
 }
 
@@ -401,26 +400,28 @@ function loadResultsData () {
         element.setAttribute("value", resultsData[typesArray[i]])
         element.style.color = "var(--" + typesArray[i] + "-color)"
         element.innerHTML = capitalizeWord(typesArray[i]) + ": " + String(resultsData[typesArray[i] + "Ratio"]) + "%"
-        if (i == 0) {
-            // first element
-            domResultsTypeRatios.appendChild(element)
-        } else if (element.getAttribute("value") > domResultsTypeRatios.firstChild.getAttribute("value")) {
-            // if the current type is higher than the first
-            domResultsTypeRatios.insertBefore(element, domResultsTypeRatios.firstChild)
-        } else {
-            // go through the children to find the correct place
-            let added = false
-            for (let j = 1; j < domResultsTypeRatios.childElementCount; j++) {
-                if (element.getAttribute("value") > domResultsTypeRatios.children[j].getAttribute("value")) {
-                    domResultsTypeRatios.insertBefore(element, domResultsTypeRatios.children[j])
-                    added = true
-                    break;
-                }
-            }
-            if (!added) {
-                domResultsTypeRatios.appendChild(element)
-            }
-        }
+        domResultsTypeRatios.appendChild(element)
+
+        // if (i == 0) {
+        //     // first element
+        //     domResultsTypeRatios.appendChild(element)
+        // } else if (element.getAttribute("value") > domResultsTypeRatios.firstChild.getAttribute("value")) {
+        //     // if the current type is higher than the first
+        //     domResultsTypeRatios.insertBefore(element, domResultsTypeRatios.firstChild)
+        // } else {
+        //     // go through the children to find the correct place
+        //     let added = false
+        //     for (let j = 1; j < domResultsTypeRatios.childElementCount; j++) {
+        //         if (element.getAttribute("value") > domResultsTypeRatios.children[j].getAttribute("value")) {
+        //             domResultsTypeRatios.insertBefore(element, domResultsTypeRatios.children[j])
+        //             added = true
+        //             break;
+        //         }
+        //     }
+        //     if (!added) {
+        //         domResultsTypeRatios.appendChild(element)
+        //     }
+        // }
     }
 
     // gen ratios
@@ -429,26 +430,28 @@ function loadResultsData () {
         let element = document.createElement("span")
         element.setAttribute("value", resultsData[gensArray[i]])
         element.innerHTML = "Gen " + (i + 1) + ": " + String(resultsData[gensArray[i] + "Ratio"]) + "%"
-        if (i == 0) {
-            // first element
-            domResultsGenRatios.appendChild(element)
-        } else if (element.getAttribute("value") > domResultsGenRatios.firstChild.getAttribute("value")) {
-            // if the current type is higher than the first
-            domResultsGenRatios.insertBefore(element, domResultsGenRatios.firstChild)
-        } else {
-            // go through the children to find the correct place
-            let added = false
-            for (let j = 1; j < domResultsGenRatios.childElementCount; j++) {
-                if (element.getAttribute("value") > domResultsGenRatios.children[j].getAttribute("value")) {
-                    domResultsGenRatios.insertBefore(element, domResultsGenRatios.children[j])
-                    added = true
-                    break;
-                }
-            }
-            if (!added) {
-                domResultsGenRatios.appendChild(element)
-            }
-        }
+        domResultsGenRatios.appendChild(element)
+
+        // if (i == 0) {
+        //     // first element
+        //     domResultsGenRatios.appendChild(element)
+        // } else if (element.getAttribute("value") > domResultsGenRatios.firstChild.getAttribute("value")) {
+        //     // if the current type is higher than the first
+        //     domResultsGenRatios.insertBefore(element, domResultsGenRatios.firstChild)
+        // } else {
+        //     // go through the children to find the correct place
+        //     let added = false
+        //     for (let j = 1; j < domResultsGenRatios.childElementCount; j++) {
+        //         if (element.getAttribute("value") > domResultsGenRatios.children[j].getAttribute("value")) {
+        //             domResultsGenRatios.insertBefore(element, domResultsGenRatios.children[j])
+        //             added = true
+        //             break;
+        //         }
+        //     }
+        //     if (!added) {
+        //         domResultsGenRatios.appendChild(element)
+        //     }
+        // }
     }
 
     // smash list
