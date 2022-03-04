@@ -16,6 +16,15 @@ The game should be compatible with Firefox, Chrome and Microsoft Edge and any ot
 
 The website is hosted on Netlify.
 
+### What's to come
+
+- Work on the design, readability, layout, mobile interface, dark mode, etc.
+
+- A back button for people who click too fast!
+
+- Regional variants and other pokemon forms I was not aware of.
+
+And more...
 
 
 # VERSIONS
