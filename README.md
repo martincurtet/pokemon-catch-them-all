@@ -20,6 +20,12 @@ The website is hosted on Netlify.
 
 # VERSIONS
 
+### VERSION 1.0.2 - 2022/03/05
+- Style: Version number with github link is now displayed
+- Style: Dark Mode
+- Style: Results pokemon names are now in a table
+- Fix: Pokemon names are one word, for now
+
 ### Version 1.0.1 - 2022/03/04
 - Fix: Double entry now less possible
 - Fix: Ratio now calculated correctly
