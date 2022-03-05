@@ -97,6 +97,10 @@ var resultsData = {
 }
 
 // DOM ELEMENTS
+const domBody = document.body
+
+const domButtonTheme = document.getElementById("button-theme")
+
 const domTitle = document.getElementById("app-title")
 const domMenu = document.getElementById("menu")
 const domGen1 = document.getElementById("gen1")
@@ -120,7 +124,7 @@ const domPkmnGen = document.getElementById("pokemon-gen")
 const domSmashTotal = document.getElementById("smash-total")
 const domSmashRatio = document.getElementById("smash-ratio")
 const domPassTotal = document.getElementById("pass-total")
-const domSmashGrid = document.getElementById("smash-grid")
+const domSmashTable = document.getElementById("smash-table")
 const domButtonCheck = document.getElementById("button-check")
 const domButtonEnd = document.getElementById("button-end")
 
@@ -132,7 +136,7 @@ const domResultsPassTotal = document.getElementById("results-pass-total")
 const domResultsSmashRatio = document.getElementById("results-smash-ratio")
 const domResultsTypeRatios = document.getElementById("results-type-ratios")
 const domResultsGenRatios = document.getElementById("results-gen-ratios")
-const domResultsSmashGrid = document.getElementById("results-smash-grid")
+const domResultsSmashTable = document.getElementById("results-smash-table")
 const domButtonDownload = document.getElementById("button-download")
 const domButtonBackToGame = document.getElementById("button-back-to-game")
 const domButtonReplay = document.getElementById("button-replay")
@@ -228,13 +232,13 @@ function passPkmn () {
 
 function smashPkmn () {
     // check if pokemon already smashed
-    let pkmnNames = domSmashGrid.childNodes
-    for (pkmnName in pkmnNames) {
-        if (pkmnName.innerHTML == capitalizeWord(currentPkmnData.name)) {
-            nextPkmn()
-            return
-        }
-    }
+    // let pkmnNames = domSmashGrid.childNodes
+    // for (pkmnName in pkmnNames) {
+    //     if (pkmnName.innerHTML == currentPkmnData.name) {
+    //         nextPkmn()
+    //         return
+    //     }
+    // }
 
     // smash saves all relevant data to the stats then next pokemon
     resultsData["smash"] += 1
@@ -248,10 +252,15 @@ function smashPkmn () {
     }
     resultsData["gen" + domPkmnGen.innerHTML.slice(-1)] += 1
 
-    // smash grid
-    let element = document.createElement("div")
-    element.innerHTML = currentPkmnData.name
-    domSmashGrid.appendChild(element)
+    // smash table
+    if (!domSmashTable.firstChild || (resultsData["smash"] - 1) % 4 == 0) {
+        // add a new row every four smash
+        let row = document.createElement("tr")
+        domSmashTable.appendChild(row)
+    }
+    let cell = document.createElement("td")
+    cell.innerHTML = currentPkmnData.name
+    domSmashTable.lastChild.appendChild(cell)
 
     updateRatios()
     nextPkmn()
@@ -306,7 +315,7 @@ async function loadPkmnData () {
     currentPkmnData = {}
     currentPkmnData.id = pkmnData.id
     currentPkmnData.sprite = pkmnData.sprites.front_default
-    currentPkmnData.name = capitalizeWord(pkmnData.name)
+    currentPkmnData.name = capitalizeWord(pkmnData.name.split("-")[0])
     currentPkmnData.height = pkmnData.height
     currentPkmnData.weight = pkmnData.weight
     currentPkmnData.type1 = pkmnData.types[0].type.name
@@ -454,8 +463,8 @@ function loadResultsData () {
         // }
     }
 
-    // smash list
-    domResultsSmashGrid.innerHTML = domSmashGrid.innerHTML
+    // smash table
+    domResultsSmashTable.innerHTML = domSmashTable.innerHTML
 }
 
 // NAVIGATION FUNCTIONS
@@ -511,7 +520,7 @@ function clearGameData () {
     domPkmnSize.innerHTML = ""
     domPkmnTypes.innerHTML = ""
     domPkmnGen.innerHTML = ""
-    domSmashGrid.innerHTML = ""
+    domSmashTable.innerHTML = ""
     domButtonCheck.disabled = true
     domButtonEnd.disabled = true
 }
@@ -578,7 +587,7 @@ function clearResultsData () {
     // dom
     domResultsTypeRatios.innerHTML = ""
     domResultsGenRatios.innerHTML = ""
-    domResultsSmashGrid.innerHTML = ""
+    domResultsSmashTable.innerHTML = ""
     loadResultsData()
 }
 
@@ -592,6 +601,16 @@ function printResults () {
         domDownloadLink.download = "results.png"
         domDownloadLink.click()
     })
+}
+
+// THEMES
+function toggleTheme() {
+    domBody.classList.toggle("theme-dark")
+    domButtonTheme.classList.toggle("dark")
+    domButtonTheme.classList.toggle("electric")
+    domSmashTable.classList.toggle("theme-dark-secondary")
+    domResultsSmashTable.classList.toggle("theme-dark-secondary")
+    domResultsPicture.classList.toggle("theme-dark")
 }
 
 // MISC FUNCTIONS
