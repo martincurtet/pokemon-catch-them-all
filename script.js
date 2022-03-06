@@ -231,15 +231,6 @@ function passPkmn () {
 }
 
 function catchPkmn () {
-    // check if pokemon already caught
-    // let pkmnNames = domCatchGrid.childNodes
-    // for (pkmnName in pkmnNames) {
-    //     if (pkmnName.innerHTML == currentPkmnData.name) {
-    //         nextPkmn()
-    //         return
-    //     }
-    // }
-
     // catch saves all relevant data to the stats then next pokemon
     resultsData["catch"] += 1
     resultsData["total"] += 1
@@ -411,27 +402,6 @@ function loadResultsData () {
         element.style.color = "var(--" + typesArray[i] + "-color)"
         element.innerHTML = capitalizeWord(typesArray[i]) + ": " + String(resultsData[typesArray[i] + "Ratio"]) + "%"
         domResultsTypeRatios.appendChild(element)
-
-        // if (i == 0) {
-        //     // first element
-        //     domResultsTypeRatios.appendChild(element)
-        // } else if (element.getAttribute("value") > domResultsTypeRatios.firstChild.getAttribute("value")) {
-        //     // if the current type is higher than the first
-        //     domResultsTypeRatios.insertBefore(element, domResultsTypeRatios.firstChild)
-        // } else {
-        //     // go through the children to find the correct place
-        //     let added = false
-        //     for (let j = 1; j < domResultsTypeRatios.childElementCount; j++) {
-        //         if (element.getAttribute("value") > domResultsTypeRatios.children[j].getAttribute("value")) {
-        //             domResultsTypeRatios.insertBefore(element, domResultsTypeRatios.children[j])
-        //             added = true
-        //             break;
-        //         }
-        //     }
-        //     if (!added) {
-        //         domResultsTypeRatios.appendChild(element)
-        //     }
-        // }
     }
 
     // gen ratios
@@ -441,27 +411,6 @@ function loadResultsData () {
         element.setAttribute("value", resultsData[gensArray[i]])
         element.innerHTML = "Gen " + (i + 1) + ": " + String(resultsData[gensArray[i] + "Ratio"]) + "%"
         domResultsGenRatios.appendChild(element)
-
-        // if (i == 0) {
-        //     // first element
-        //     domResultsGenRatios.appendChild(element)
-        // } else if (element.getAttribute("value") > domResultsGenRatios.firstChild.getAttribute("value")) {
-        //     // if the current type is higher than the first
-        //     domResultsGenRatios.insertBefore(element, domResultsGenRatios.firstChild)
-        // } else {
-        //     // go through the children to find the correct place
-        //     let added = false
-        //     for (let j = 1; j < domResultsGenRatios.childElementCount; j++) {
-        //         if (element.getAttribute("value") > domResultsGenRatios.children[j].getAttribute("value")) {
-        //             domResultsGenRatios.insertBefore(element, domResultsGenRatios.children[j])
-        //             added = true
-        //             break;
-        //         }
-        //     }
-        //     if (!added) {
-        //         domResultsGenRatios.appendChild(element)
-        //     }
-        // }
     }
 
     // catch table
@@ -626,39 +575,3 @@ function capitalizeWord (s) {
 
 // FIRST FUNCTION CALL
 calcGenTotal()
-
-// temp
-fetch("https://pokeapi.co/api/v2/pokemon-species/25")
-    .then(response => response.json())
-    .then(data => {
-        for (let i = 0; i <= 16; i++) {
-            console.log(data.varieties[i].pokemon.name)
-            // let urlArray = String(data.varieties[i].pokemon.url).split("/")
-            // let id = urlArray[urlArray.length - 2]
-            // console.log(id)
-
-            // fetch("https://pokeapi.co/api/v2/pokemon/" + id)
-            //     .then(response => response.json())
-            //     .then(data => {
-            //         console.log(data.sprites.front_default)
-            //     })
-        }
-        fetch("https://pokeapi.co/api/v2/pokemon/10199")
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data.sprites.front_default)
-                }) 
-    })
-
-// get all ids for gen 1
-// for (let p = 1; p <= 151; p++) {
-//     fetch("https://pokeapi.co/api/v2/pokemon-species/" + p)
-//     .then(response => response.json())
-//     .then(data => {
-//         for (let i = 0; i < data.varieties.length; i++) {
-//             let urlArray = String(data.varieties[i].pokemon.url).split("/")
-//             console.log(data.varieties[i].pokemon)
-//             // console.log(urlArray[urlArray.length - 2])
-//         }
-//     })
-// }
