@@ -38,9 +38,9 @@ var currentArrayIndex = 0
 var currentPkmnData = {}
 
 var resultsData = {
-    "smash": 0,
+    "catch": 0,
     "pass": 0,
-    "smashRatio": 0,
+    "catchRatio": 0,
     "total": 0,
     "normal": 0,
     "normalRatio": 0,
@@ -121,22 +121,22 @@ const domPkmnName = document.getElementById("pokemon-name")
 const domPkmnSize = document.getElementById("pokemon-size")
 const domPkmnTypes = document.getElementById("pokemon-types")
 const domPkmnGen = document.getElementById("pokemon-gen")
-const domSmashTotal = document.getElementById("smash-total")
-const domSmashRatio = document.getElementById("smash-ratio")
+const domCatchTotal = document.getElementById("catch-total")
+const domCatchRatio = document.getElementById("catch-ratio")
 const domPassTotal = document.getElementById("pass-total")
-const domSmashTable = document.getElementById("smash-table")
+const domCatchTable = document.getElementById("catch-table")
 const domButtonCheck = document.getElementById("button-check")
 const domButtonEnd = document.getElementById("button-end")
 
 const domResults = document.getElementById("results")
 const domResultsPicture = document.getElementById("results-picture")
 const domResultsTotal = document.getElementById("results-total")
-const domResultsSmashTotal = document.getElementById("results-smash-total")
+const domResultsCatchTotal = document.getElementById("results-catch-total")
 const domResultsPassTotal = document.getElementById("results-pass-total")
-const domResultsSmashRatio = document.getElementById("results-smash-ratio")
+const domResultsCatchRatio = document.getElementById("results-catch-ratio")
 const domResultsTypeRatios = document.getElementById("results-type-ratios")
 const domResultsGenRatios = document.getElementById("results-gen-ratios")
-const domResultsSmashTable = document.getElementById("results-smash-table")
+const domResultsCatchTable = document.getElementById("results-catch-table")
 const domButtonDownload = document.getElementById("button-download")
 const domButtonBackToGame = document.getElementById("button-back-to-game")
 const domButtonReplay = document.getElementById("button-replay")
@@ -230,9 +230,9 @@ function passPkmn () {
     nextPkmn()
 }
 
-function smashPkmn () {
-    // check if pokemon already smashed
-    // let pkmnNames = domSmashGrid.childNodes
+function catchPkmn () {
+    // check if pokemon already caught
+    // let pkmnNames = domCatchGrid.childNodes
     // for (pkmnName in pkmnNames) {
     //     if (pkmnName.innerHTML == currentPkmnData.name) {
     //         nextPkmn()
@@ -240,8 +240,8 @@ function smashPkmn () {
     //     }
     // }
 
-    // smash saves all relevant data to the stats then next pokemon
-    resultsData["smash"] += 1
+    // catch saves all relevant data to the stats then next pokemon
+    resultsData["catch"] += 1
     resultsData["total"] += 1
     if (currentPkmnData.type2) {
         resultsData[currentPkmnData.type1] += 0.5
@@ -252,53 +252,53 @@ function smashPkmn () {
     }
     resultsData["gen" + domPkmnGen.innerHTML.slice(-1)] += 1
 
-    // smash table
-    if (!domSmashTable.firstChild || (resultsData["smash"] - 1) % 4 == 0) {
-        // add a new row every four smash
+    // caught table
+    if (!domCatchTable.firstChild || (resultsData["catch"] - 1) % 4 == 0) {
+        // add a new row every four catch
         let row = document.createElement("tr")
-        domSmashTable.appendChild(row)
+        domCatchTable.appendChild(row)
     }
     let cell = document.createElement("td")
     cell.innerHTML = currentPkmnData.name
-    domSmashTable.lastChild.appendChild(cell)
+    domCatchTable.lastChild.appendChild(cell)
 
     updateRatios()
     nextPkmn()
 }
 
 function updateRatios () {
-    // smash ratio
-    resultsData["smashRatio"] = Math.round(100 * resultsData["smash"] / resultsData["total"])
+    // caught ratio
+    resultsData["catchRatio"] = Math.round(100 * resultsData["catch"] / resultsData["total"])
 
     // type ratios
-    resultsData["normalRatio"] = Math.round(100 * resultsData["normal"] / resultsData["smash"])
-    resultsData["fireRatio"] = Math.round(100 * resultsData["fire"] / resultsData["smash"])
-    resultsData["waterRatio"] = Math.round(100 * resultsData["water"] / resultsData["smash"])
-    resultsData["electricRatio"] = Math.round(100 * resultsData["electric"] / resultsData["smash"])
-    resultsData["grassRatio"] = Math.round(100 * resultsData["grass"] / resultsData["smash"])
-    resultsData["iceRatio"] = Math.round(100 * resultsData["ice"] / resultsData["smash"])
-    resultsData["fightingRatio"] = Math.round(100 * resultsData["fighting"] / resultsData["smash"])
-    resultsData["poisonRatio"] = Math.round(100 * resultsData["poison"] / resultsData["smash"])
-    resultsData["groundRatio"] = Math.round(100 * resultsData["ground"] / resultsData["smash"])
-    resultsData["flyingRatio"] = Math.round(100 * resultsData["flying"] / resultsData["smash"])
-    resultsData["psychicRatio"] = Math.round(100 * resultsData["psychic"] / resultsData["smash"])
-    resultsData["bugRatio"] = Math.round(100 * resultsData["bug"] / resultsData["smash"])
-    resultsData["rockRatio"] = Math.round(100 * resultsData["rock"] / resultsData["smash"])
-    resultsData["ghostRatio"] = Math.round(100 * resultsData["ghost"] / resultsData["smash"])
-    resultsData["dragonRatio"] = Math.round(100 * resultsData["dragon"] / resultsData["smash"])
-    resultsData["darkRatio"] = Math.round(100 * resultsData["dark"] / resultsData["smash"])
-    resultsData["steelRatio"] = Math.round(100 * resultsData["steel"] / resultsData["smash"])
-    resultsData["fairyRatio"] = Math.round(100 * resultsData["fairy"] / resultsData["smash"])
+    resultsData["normalRatio"] = Math.round(100 * resultsData["normal"] / resultsData["catch"])
+    resultsData["fireRatio"] = Math.round(100 * resultsData["fire"] / resultsData["catch"])
+    resultsData["waterRatio"] = Math.round(100 * resultsData["water"] / resultsData["catch"])
+    resultsData["electricRatio"] = Math.round(100 * resultsData["electric"] / resultsData["catch"])
+    resultsData["grassRatio"] = Math.round(100 * resultsData["grass"] / resultsData["catch"])
+    resultsData["iceRatio"] = Math.round(100 * resultsData["ice"] / resultsData["catch"])
+    resultsData["fightingRatio"] = Math.round(100 * resultsData["fighting"] / resultsData["catch"])
+    resultsData["poisonRatio"] = Math.round(100 * resultsData["poison"] / resultsData["catch"])
+    resultsData["groundRatio"] = Math.round(100 * resultsData["ground"] / resultsData["catch"])
+    resultsData["flyingRatio"] = Math.round(100 * resultsData["flying"] / resultsData["catch"])
+    resultsData["psychicRatio"] = Math.round(100 * resultsData["psychic"] / resultsData["catch"])
+    resultsData["bugRatio"] = Math.round(100 * resultsData["bug"] / resultsData["catch"])
+    resultsData["rockRatio"] = Math.round(100 * resultsData["rock"] / resultsData["catch"])
+    resultsData["ghostRatio"] = Math.round(100 * resultsData["ghost"] / resultsData["catch"])
+    resultsData["dragonRatio"] = Math.round(100 * resultsData["dragon"] / resultsData["catch"])
+    resultsData["darkRatio"] = Math.round(100 * resultsData["dark"] / resultsData["catch"])
+    resultsData["steelRatio"] = Math.round(100 * resultsData["steel"] / resultsData["catch"])
+    resultsData["fairyRatio"] = Math.round(100 * resultsData["fairy"] / resultsData["catch"])
 
     // gen ratios
-    resultsData["gen1Ratio"] = Math.round(100 * resultsData["gen1"] / resultsData["smash"])
-    resultsData["gen2Ratio"] = Math.round(100 * resultsData["gen2"] / resultsData["smash"])
-    resultsData["gen3Ratio"] = Math.round(100 * resultsData["gen3"] / resultsData["smash"])
-    resultsData["gen4Ratio"] = Math.round(100 * resultsData["gen4"] / resultsData["smash"])
-    resultsData["gen5Ratio"] = Math.round(100 * resultsData["gen5"] / resultsData["smash"])
-    resultsData["gen6Ratio"] = Math.round(100 * resultsData["gen6"] / resultsData["smash"])
-    resultsData["gen7Ratio"] = Math.round(100 * resultsData["gen7"] / resultsData["smash"])
-    resultsData["gen8Ratio"] = Math.round(100 * resultsData["gen8"] / resultsData["smash"])
+    resultsData["gen1Ratio"] = Math.round(100 * resultsData["gen1"] / resultsData["catch"])
+    resultsData["gen2Ratio"] = Math.round(100 * resultsData["gen2"] / resultsData["catch"])
+    resultsData["gen3Ratio"] = Math.round(100 * resultsData["gen3"] / resultsData["catch"])
+    resultsData["gen4Ratio"] = Math.round(100 * resultsData["gen4"] / resultsData["catch"])
+    resultsData["gen5Ratio"] = Math.round(100 * resultsData["gen5"] / resultsData["catch"])
+    resultsData["gen6Ratio"] = Math.round(100 * resultsData["gen6"] / resultsData["catch"])
+    resultsData["gen7Ratio"] = Math.round(100 * resultsData["gen7"] / resultsData["catch"])
+    resultsData["gen8Ratio"] = Math.round(100 * resultsData["gen8"] / resultsData["catch"])
 
 }
 
@@ -315,7 +315,8 @@ async function loadPkmnData () {
     currentPkmnData = {}
     currentPkmnData.id = pkmnData.id
     currentPkmnData.sprite = pkmnData.sprites.front_default
-    currentPkmnData.name = capitalizeWord(pkmnData.name.split("-")[0])
+    // currentPkmnData.name = capitalizeWord(pkmnData.name.split("-")[0])
+    currentPkmnData.name = capitalizeWord(pkmnData.name)
     currentPkmnData.height = pkmnData.height
     currentPkmnData.weight = pkmnData.weight
     currentPkmnData.type1 = pkmnData.types[0].type.name
@@ -323,8 +324,8 @@ async function loadPkmnData () {
     currentPkmnData.gen = getGenById(pkmnData.id)
 
     // ratio
-    domSmashTotal.innerHTML = resultsData["smash"]
-    domSmashRatio.innerHTML = resultsData["smashRatio"]
+    domCatchTotal.innerHTML = resultsData["catch"]
+    domCatchRatio.innerHTML = resultsData["catchRatio"]
     domPassTotal.innerHTML = resultsData["pass"]
 }
 
@@ -392,14 +393,14 @@ function getGenById (id) {
 
 // RESULTS FUNCTIONS
 function loadResultsData () {
-    // smash pass total and ratio
+    // catch pass total and ratio
     domResultsTotal.innerHTML = resultsData["total"]
-    domResultsSmashTotal.innerHTML = resultsData["smash"]
+    domResultsCatchTotal.innerHTML = resultsData["catch"]
     domResultsPassTotal.innerHTML = resultsData["pass"]
-    if (resultsData["smashRatio"] == 0 && resultsData["smash"] != 0) {
-        domResultsSmashRatio.innerHTML = "<" + resultsData["smashRatio"] + "%"
+    if (resultsData["catchRatio"] == 0 && resultsData["catch"] != 0) {
+        domResultsCatchRatio.innerHTML = "<" + resultsData["catchRatio"] + "%"
     } else {
-        domResultsSmashRatio.innerHTML = resultsData["smashRatio"] + "%"
+        domResultsCatchRatio.innerHTML = resultsData["catchRatio"] + "%"
     }
 
     // type ratios
@@ -463,8 +464,8 @@ function loadResultsData () {
         // }
     }
 
-    // smash table
-    domResultsSmashTable.innerHTML = domSmashTable.innerHTML
+    // catch table
+    domResultsCatchTable.innerHTML = domCatchTable.innerHTML
 }
 
 // NAVIGATION FUNCTIONS
@@ -520,17 +521,17 @@ function clearGameData () {
     domPkmnSize.innerHTML = ""
     domPkmnTypes.innerHTML = ""
     domPkmnGen.innerHTML = ""
-    domSmashTable.innerHTML = ""
+    domCatchTable.innerHTML = ""
     domButtonCheck.disabled = true
     domButtonEnd.disabled = true
 }
 
 function clearResultsData () {
     // var
-    resultsData["smash"] = 0
+    resultsData["catch"] = 0
     resultsData["pass"] = 0
     resultsData["total"] = 0
-    resultsData["smashRatio"] = 0
+    resultsData["catchRatio"] = 0
     resultsData["normal"] = 0
     resultsData["normalRatio"] = 0
     resultsData["fire"] = 0
@@ -587,7 +588,7 @@ function clearResultsData () {
     // dom
     domResultsTypeRatios.innerHTML = ""
     domResultsGenRatios.innerHTML = ""
-    domResultsSmashTable.innerHTML = ""
+    domResultsCatchTable.innerHTML = ""
     loadResultsData()
 }
 
@@ -608,8 +609,8 @@ function toggleTheme() {
     domBody.classList.toggle("theme-dark")
     domButtonTheme.classList.toggle("dark")
     domButtonTheme.classList.toggle("electric")
-    domSmashTable.classList.toggle("theme-dark-secondary")
-    domResultsSmashTable.classList.toggle("theme-dark-secondary")
+    domCatchTable.classList.toggle("theme-dark-secondary")
+    domResultsCatchTable.classList.toggle("theme-dark-secondary")
     domResultsPicture.classList.toggle("theme-dark")
 }
 
@@ -625,3 +626,39 @@ function capitalizeWord (s) {
 
 // FIRST FUNCTION CALL
 calcGenTotal()
+
+// temp
+fetch("https://pokeapi.co/api/v2/pokemon-species/25")
+    .then(response => response.json())
+    .then(data => {
+        for (let i = 0; i <= 16; i++) {
+            console.log(data.varieties[i].pokemon.name)
+            // let urlArray = String(data.varieties[i].pokemon.url).split("/")
+            // let id = urlArray[urlArray.length - 2]
+            // console.log(id)
+
+            // fetch("https://pokeapi.co/api/v2/pokemon/" + id)
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         console.log(data.sprites.front_default)
+            //     })
+        }
+        fetch("https://pokeapi.co/api/v2/pokemon/10199")
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.sprites.front_default)
+                }) 
+    })
+
+// get all ids for gen 1
+// for (let p = 1; p <= 151; p++) {
+//     fetch("https://pokeapi.co/api/v2/pokemon-species/" + p)
+//     .then(response => response.json())
+//     .then(data => {
+//         for (let i = 0; i < data.varieties.length; i++) {
+//             let urlArray = String(data.varieties[i].pokemon.url).split("/")
+//             console.log(data.varieties[i].pokemon)
+//             // console.log(urlArray[urlArray.length - 2])
+//         }
+//     })
+// }

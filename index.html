@@ -8,12 +8,12 @@
         <link rel="stylesheet" href="index.css">
         <script src="script.js" defer></script>
         <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
-        <title>Pokémon Smash or Pass</title>
+        <title>Pokémon Catch Them All</title>
     </head>
     <body>
         <!-- APP -->
         <div id="app">
-            <h1 id="app-title">Pokémon Smash or Pass</h1>
+            <h1 id="app-title">Pokémon Catch Them All</h1>
 
             <button id="button-theme" class="button dark" onclick="toggleTheme()">Toggle Theme</button>
 
@@ -70,12 +70,12 @@
                     <span id="pokemon-types"></span>
                     <span id="pokemon-gen"></span>
                 </div>
-                <div><span id="smash-total"></span> (<span id="smash-ratio"></span>%) <span id="pass-total"></spanid></div>
+                <div><span id="catch-total"></span> (<span id="catch-ratio"></span>%) <span id="pass-total"></spanid></div>
                 <div class="button-container">
-                    <button class="button grass" onclick="smashPkmn()">Smash</button>
-                    <button class="button fighting" onclick="passPkmn()">Pass</button>
+                    <button class="button grass" onclick="catchPkmn()">I choose you!</button>
+                    <button class="button fighting" onclick="passPkmn()">Let it go</button>
                 </div>
-                <table id="smash-table"></table>
+                <table id="catch-table"></table>
                 <div class="button-container">
                     <!-- <button onclick="prevPkmn()">Previous</button> -->
                     <!-- <button onclick="nextPkmn()">Next</button> -->
@@ -90,16 +90,16 @@
                 <div id="results-picture">
                     <div id="results-stats">
                         <span>Pokémon reviewed: <span id="results-total"></span></span>
-                        <span>Pokémon I'd smash: <span id="results-smash-total"></span></span>
-                        <span>Pokémon I'd pass: <span id="results-pass-total"></span></span>
-                        <span>Ratio: <span id="results-smash-ratio"></span></span>
+                        <span>Pokémon I chose: <span id="results-catch-total"></span></span>
+                        <span>Pokémon I let go: <span id="results-pass-total"></span></span>
+                        <span>Ratio: <span id="results-catch-ratio"></span></span>
                     </div>
                     <div id="results-ratios">
                         <div id="results-type-ratios"></div>
                         <div id="results-gen-ratios"></div>
                     </div>
                     <div id="results-table">
-                        <table id="results-smash-table"></table>
+                        <table id="results-catch-table"></table>
                     </div>
                 </div>
                 <div class="button-container">
@@ -112,7 +112,7 @@
             </div><!-- END RESULTS -->
         </div><!-- END APP -->
         <div id="footer">
-            <a href="https://github.com/martincurtet/pokemon-smash-or-pass" target="_blank">v1.0.1</a>
+            <a href="https://github.com/martincurtet/pokemon-catch-them-all" target="_blank">v1.0.2a</a>
         </div>
     </body>
 </html>
