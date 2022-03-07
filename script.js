@@ -138,6 +138,8 @@ const domMenuVarieties = document.getElementById("menu-varieties")
 const domMenuRandom = document.getElementById("menu-random")
 const domCheckboxes = []
 
+const domLoader = document.getElementById("loader")
+
 const domGame = document.getElementById("game")
 const domPkmnInfos = document.getElementById("pokemon-info")
 const domPkmnSprite = document.getElementById("pokemon-sprite")
@@ -154,6 +156,7 @@ const domButtonEnd = document.getElementById("button-end")
 
 const domResults = document.getElementById("results")
 const domResultsPicture = document.getElementById("results-picture")
+const domResultsPokedex = document.getElementById("results-pokedex")
 const domResultsTotal = document.getElementById("results-total")
 const domResultsCatchTotal = document.getElementById("results-catch-total")
 const domResultsPassTotal = document.getElementById("results-pass-total")
@@ -190,10 +193,11 @@ function loadMenuData () {
         for (let [name, id] of Object.entries(value)) {
             let nameArray = name.split("-")
             let elementPokedex = createRadioButton(
-                id,
+                key + "-" + name,
                 "radio-pokedex",
                 capitalizeWord(nameArray[0]) + " " + capitalizeWord(nameArray[1] ? nameArray[1] : ""),
                 (key == "national" && name == "national") ? true : false,
+                id,
             )
             elementPokedexCardContent.appendChild(elementPokedex)
         }
@@ -238,12 +242,12 @@ function createCheckbox (id, label, checked) {
     return element
 }
 
-function createRadioButton (id, radioName, label, checked) {
+function createRadioButton (id, radioName, label, checked, value) {
     let radioButton = document.createElement("input")
     radioButton.setAttribute("id", id)
     radioButton.setAttribute("type", "radio")
     radioButton.setAttribute("name", radioName)
-    radioButton.setAttribute("value", id)
+    radioButton.setAttribute("value", value)
     radioButton.checked = checked
 
     let radioButtonLabel = document.createElement("label")
@@ -261,6 +265,7 @@ function createRadioButton (id, radioName, label, checked) {
 async function getGameSettings () {
     gameSettings = {
         pokedex: document.querySelector("input[type='radio']:checked").value,
+        pokedexName: "",
         random: domCheckboxes[4].checked,
         filters: {
             mega: domCheckboxes[0].checked,
@@ -269,7 +274,6 @@ async function getGameSettings () {
             galar: domCheckboxes[3].checked,
         },
     }
-    console.log(gameSettings)
 }
 
 async function fetchPkmnSpecies (paramPokedexNumber) {
@@ -350,7 +354,6 @@ async function initializeArrayPkmn (random) {
     }
 
     // TODO: make the random array still have the varieties next to their parent
-    console.log(arrayPkmn)
 }
 
 // GAME FUNCTIONS
@@ -521,6 +524,12 @@ function getGenById (id) {
 
 // RESULTS FUNCTIONS
 function loadResultsData () {
+    let pokedexArray = (document.querySelector("input[type='radio']:checked").id).split("-")
+    if (pokedexArray.length !== new Set(pokedexArray).size) {
+        domResultsPokedex.innerHTML = capitalizeWord(pokedexArray[0])
+    } else {
+        domResultsPokedex.innerHTML = capitalizeWord(pokedexArray[0]) + " " + capitalizeWord(pokedexArray[1])
+    }
     // catch pass total and ratio
     domResultsTotal.innerHTML = resultsData["total"]
     domResultsCatchTotal.innerHTML = resultsData["catch"]
@@ -541,15 +550,6 @@ function loadResultsData () {
         domResultsTypeRatios.appendChild(element)
     }
 
-    // gen ratios
-    // domResultsGenRatios.innerHTML = ""
-    // for (let i= 0; i < gensArray.length; i++) {
-    //     let element = document.createElement("span")
-    //     element.setAttribute("value", resultsData[gensArray[i]])
-    //     element.innerHTML = "Gen " + (i + 1) + ": " + String(resultsData[gensArray[i] + "Ratio"]) + "%"
-    //     domResultsGenRatios.appendChild(element)
-    // }
-
     // catch table
     domResultsCatchTable.innerHTML = domCatchTable.innerHTML
 }
@@ -569,8 +569,11 @@ function loadMenu (replay=false) {
 async function loadGame (random=false, back=false) {
     if (!back) {
         await getGameSettings()
+        domMenu.style.display = "none"
+        domLoader.style.display = "block"
         await initializeArrayPkmn(random)
         await displayPkmnData()
+        domLoader.style.display = "none"
     }
 
     domMenu.style.display = "none",
@@ -600,7 +603,8 @@ function loadResults (end=false) {
 // CLEAR DATA FUNCTIONS
 function clearGameData () {
     // var
-    pkmnIdsArray = []
+    arrayPkmnSpecies = []
+    arrayPkmn = []
     currentArrayIndex = 0
     currentPkmnData = {}
 
@@ -617,64 +621,12 @@ function clearGameData () {
 
 function clearResultsData () {
     // var
-    resultsData["catch"] = 0
-    resultsData["pass"] = 0
-    resultsData["total"] = 0
-    resultsData["catchRatio"] = 0
-    resultsData["normal"] = 0
-    resultsData["normalRatio"] = 0
-    resultsData["fire"] = 0
-    resultsData["fireRatio"] = 0
-    resultsData["water"] = 0
-    resultsData["waterRatio"] = 0
-    resultsData["electric"] = 0
-    resultsData["electricRatio"] = 0
-    resultsData["grass"] = 0
-    resultsData["grassRatio"] = 0
-    resultsData["ice"] = 0
-    resultsData["iceRatio"] = 0
-    resultsData["fighting"] = 0
-    resultsData["figthingRatio"] = 0
-    resultsData["poison"] = 0
-    resultsData["poisonRatio"] = 0
-    resultsData["ground"] = 0
-    resultsData["groundRatio"] = 0
-    resultsData["flying"] = 0
-    resultsData["flyingRatio"] = 0
-    resultsData["psychic"] = 0
-    resultsData["psychicRatio"] = 0
-    resultsData["bug"] = 0
-    resultsData["bugRatio"] = 0
-    resultsData["rock"] = 0
-    resultsData["rockRatio"] = 0
-    resultsData["ghost"] = 0
-    resultsData["ghostRatio"] = 0
-    resultsData["dragon"] = 0
-    resultsData["dragonRatio"] = 0
-    resultsData["dark"] = 0
-    resultsData["darkRatio"] = 0
-    resultsData["steel"] = 0
-    resultsData["steelRatio"] = 0
-    resultsData["fairy"] = 0
-    resultsData["fairyRatio"] = 0
-    resultsData["gen1"] = 0
-    resultsData["gen1Ratio"] = 0
-    resultsData["gen2"] = 0
-    resultsData["gen2Ratio"] = 0
-    resultsData["gen3"] = 0
-    resultsData["gen3Ratio"] = 0
-    resultsData["gen4"] = 0
-    resultsData["gen4Ratio"] = 0
-    resultsData["gen5"] = 0
-    resultsData["gen5Ratio"] = 0
-    resultsData["gen6"] = 0
-    resultsData["gen6Ratio"] = 0
-    resultsData["gen7"] = 0
-    resultsData["gen7Ratio"] = 0
-    resultsData["gen8"] = 0
-    resultsData["gen8Ratio"] = 0
+    for (let [key, value] of Object.entries(resultsData)) {
+        resultsData[key] = 0
+    }
 
     // dom
+    domResultsPokedex.innerHTML = ""
     domResultsTypeRatios.innerHTML = ""
     domResultsGenRatios.innerHTML = ""
     domResultsCatchTable.innerHTML = ""

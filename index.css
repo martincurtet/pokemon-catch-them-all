@@ -87,6 +87,10 @@ body {
     gap: 20px;
 }
 
+#loader {
+    display: none;
+}
+
 /* GAME */
 #game {
     display: none;
