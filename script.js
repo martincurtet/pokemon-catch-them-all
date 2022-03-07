@@ -144,6 +144,8 @@ const domButtonReplay = document.getElementById("button-replay")
 const domDownloadCanvasContainer = document.getElementById("download-canvas-container")
 const domDownloadLink = document.getElementById("download-link")
 
+const domVersionNumber = document.getElementById("version-number")
+
 // MENU FUNCTIONS
 function calcGenTotal () {
     let gen1 = domGen1.checked ? parseInt(domGen1.getAttribute("value")) : 0
@@ -561,6 +563,7 @@ function toggleTheme() {
     domCatchTable.classList.toggle("theme-dark-secondary")
     domResultsCatchTable.classList.toggle("theme-dark-secondary")
     domResultsPicture.classList.toggle("theme-dark")
+    domVersionNumber.classList.toggle("theme-dark")
 }
 
 // MISC FUNCTIONS

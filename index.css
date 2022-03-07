@@ -64,6 +64,7 @@ body {
     color: var(--font-color-dark);
 }
 
+
 .theme-dark-secondary {
     background-color: var(--secondary-color-dark);
     color: var(--font-color);
@@ -190,7 +191,7 @@ body {
     padding: 5px;
 }
 
-#footer a {
+a {
     color: var(--font-color);
     text-decoration: none;
 }
