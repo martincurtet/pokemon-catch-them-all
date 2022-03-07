@@ -218,11 +218,75 @@ a {
 }
 
 /* CLASSES */
-.checkbox-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 20px;
-    row-gap: 5px;
+.menu-category-title {
+    font-weight: bold;
+    /* border: solid 1px black; */
+    border-radius: 15px;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background-color: var(--water-color);
+}
+
+.menu-category {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.menu-card {
+    padding: 10px;
+    /* border: solid 1px var(--font-color); */
+    border-radius: 15px;
+    width: 260px;
+    height: 300px;
+    color: var(--font-color);
+    background-color: var(--normal-color);
+}
+
+.menu-card-title {
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.menu-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    height: 240px;
+    background-color: var(--background-color);
+    padding: 5px 15px;
+    border-radius: 15px;
+}
+
+.menu-card-option {
+    cursor: pointer;
+}
+
+label {
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + label {
+    font-weight: bold;
+}
+
+input[type="radio"]:checked + label:before {
+    content: "►";
+    margin-right: 3px;
+}
+
+input[type="radio"]:checked + label:after {
+    content: "◄";
 }
 
 table {

@@ -4,6 +4,54 @@ const urlPokedex = urlApi + "pokedex/"
 const urlPkmnSpecies = urlApi + "pokemon-species/"
 const urlPkmn = urlApi + "pokemon/"
 
+const pokedexDict = {
+    "national": {
+        "national": 1,
+    },
+    "kanto": {
+        "original": 2,
+    },
+    "johto": {
+        "original": 3,
+        "updated": 7,
+    },
+    "hoenn": {
+        "original": 4,
+        "updated": 15,
+    },
+    "sinnoh": {
+        "original": 5,
+        "extended": 6,
+    },
+    "unova": {
+        "original": 8,
+        "updated": 9 ,
+    },
+    "kalos": {
+        // all
+        "central": 12,
+        "coastal": 13,
+        "mountain": 14,
+    },
+    "alola": {
+        "original": 16,
+        "melemele": 17,
+        "akala": 18,
+        "ulaula": 19,
+        "poni": 20,
+        "updated": 21,
+        "updated-melemele": 22,
+        "updated-akala": 23,
+        "updated-ulaula": 24,
+        "updated-poni": 25,
+    },
+    "galar": {
+        "original": 27,
+    },
+}
+
+const varietiesArray = ["mega", "gmax", "alola", "galar"]
+
 const typesArray = [ "normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"]
 const colorDict = {
     "normal": "#A8A77A",
@@ -84,6 +132,11 @@ const domButtonTheme = document.getElementById("button-theme")
 const domTitle = document.getElementById("app-title")
 
 const domMenu = document.getElementById("menu")
+const domTotal = document.getElementById("menu-total")
+const domMenuPokedex = document.getElementById("menu-pokedex")
+const domMenuVarieties = document.getElementById("menu-varieties")
+const domMenuRandom = document.getElementById("menu-random")
+const domCheckboxes = []
 
 const domGame = document.getElementById("game")
 const domPkmnInfos = document.getElementById("pokemon-info")
@@ -118,11 +171,113 @@ const domDownloadLink = document.getElementById("download-link")
 const domVersionNumber = document.getElementById("version-number")
 
 // MENU FUNCTIONS
+function loadMenuData () {
+    // loads the menu cards and filters
+    // pokedex cards
+    for (let [key, value] of Object.entries(pokedexDict)) {
+        let elementPokedexCard = document.createElement("div")
+        elementPokedexCard.classList.add("menu-card")
+
+        let elementPokedexCardTitle = document.createElement("div")
+        elementPokedexCardTitle.classList.add("menu-card-title")
+        elementPokedexCardTitle.innerHTML = capitalizeWord(key)
+        elementPokedexCard.appendChild(elementPokedexCardTitle)
+
+        let elementPokedexCardContent = document.createElement("div")
+        elementPokedexCardContent.classList.add("menu-card-content")
+
+        // every pokedex in card
+        for (let [name, id] of Object.entries(value)) {
+            let nameArray = name.split("-")
+            let elementPokedex = createRadioButton(
+                id,
+                "radio-pokedex",
+                capitalizeWord(nameArray[0]) + " " + capitalizeWord(nameArray[1] ? nameArray[1] : ""),
+                (key == "national" && name == "national") ? true : false,
+            )
+            elementPokedexCardContent.appendChild(elementPokedex)
+        }
+
+        elementPokedexCard.appendChild(elementPokedexCardContent)
+
+        domMenuPokedex.appendChild(elementPokedexCard)
+    }
+
+    // varieties
+    for (let i = 0; i < varietiesArray.length; i++) {
+        let elementVarieties = createCheckbox(
+            "checkbox-" + varietiesArray[i],
+            capitalizeWord(varietiesArray[i]),
+            true,
+        )
+        domCheckboxes.push(elementVarieties.firstChild)
+        domMenuVarieties.appendChild(elementVarieties)
+    }
+
+    // random
+    let elementRandom = createCheckbox("checkbox-random", "Random", false)
+    domCheckboxes.push(elementRandom.firstChild)
+    domMenuRandom.appendChild(elementRandom)
+}
+
+function createCheckbox (id, label, checked) {
+    let checkbox = document.createElement("input")
+    checkbox.setAttribute("type", "checkbox")
+    checkbox.setAttribute("id", "radio-button-" + id)
+    checkbox.checked = checked
+
+    let checkboxLabel = document.createElement("label")
+    checkboxLabel.setAttribute("for", "radio-button-" + id)
+    checkboxLabel.innerHTML = label
+
+    let element = document.createElement("div")
+    element.classList.add("menu-filter")
+    element.appendChild(checkbox)
+    element.appendChild(checkboxLabel)
+
+    return element
+}
+
+function createRadioButton (id, radioName, label, checked) {
+    let radioButton = document.createElement("input")
+    radioButton.setAttribute("id", id)
+    radioButton.setAttribute("type", "radio")
+    radioButton.setAttribute("name", radioName)
+    radioButton.setAttribute("value", id)
+    radioButton.checked = checked
+
+    let radioButtonLabel = document.createElement("label")
+    radioButtonLabel.setAttribute("for", id)
+    radioButtonLabel.innerHTML = label
+
+    let element = document.createElement("div")
+    element.classList.add("menu-card-option")
+    element.appendChild(radioButton)
+    element.appendChild(radioButtonLabel)
+
+    return element
+}
+
+async function getGameSettings () {
+    gameSettings = {
+        pokedex: document.querySelector("input[type='radio']:checked").value,
+        random: domCheckboxes[4].checked,
+        filters: {
+            mega: domCheckboxes[0].checked,
+            gmax: domCheckboxes[1].checked,
+            alola: domCheckboxes[2].checked,
+            galar: domCheckboxes[3].checked,
+        },
+    }
+    console.log(gameSettings)
+}
+
 async function fetchPkmnSpecies (paramPokedexNumber) {
     let returnArray = []
     let fetchData = await (await fetch(urlPokedex + paramPokedexNumber)).json()
     for (let i = 0; i < fetchData.pokemon_entries.length; i++) {
-        returnArray.push(fetchData.pokemon_entries[i].entry_number)
+        let urlArray = fetchData.pokemon_entries[i].pokemon_species.url.split("/")
+        returnArray.push(parseInt(urlArray[urlArray.length - 2]))
     }
     return returnArray
 }
@@ -137,7 +292,12 @@ async function fetchPkmn (paramSpeciesArray) {
         arrayEntry.id = urlArray[urlArray.length - 2]
         returnArray.push(arrayEntry)
         // varieties
-        if (fetchData.varieties[1] ? true : false) {
+        if (
+            (gameSettings.filters.mega || gameSettings.filters.gmax ||
+            gameSettings.filters.alola || gameSettings.filters.galar
+            ) &&
+            fetchData.varieties[1] ? true : false
+        ) {
             for (let i = 1; i < fetchData.varieties.length; i++) {
                 let arrayEntry = {}
                 let urlArray = fetchData.varieties[i].pokemon.url.split("/")
@@ -159,16 +319,16 @@ function getVariety (name) {
     arrayName = name.split("-")
     if (arrayName.includes("totem")) {
         return "cancel"
-    } else if (arrayName.includes("mega")) {
+    } else if (gameSettings.filters.mega && arrayName.includes("mega")) {
         return "mega"
-    } else if (arrayName.includes("gmax")) {
+    } else if (gameSettings.filters.gmax && arrayName.includes("gmax")) {
         return "gmax"
     } else if (arrayName.includes("pikachu")) {
         // pikachu must be after gmax and before alola
         return "cancel" // temp not including pikachus
-    } else if (arrayName.includes("alola")) {
+    } else if (gameSettings.filters.alola && arrayName.includes("alola")) {
         return "alola"
-    } else if (arrayName.includes("galar")) {
+    } else if (gameSettings.filters.galar && arrayName.includes("galar")) {
         return "galar"
     } else {
         return "cancel"
@@ -176,26 +336,11 @@ function getVariety (name) {
 }
 
 async function initializeArrayPkmn (random) {
-    // random will be handled in game settings not function parameters
-    gameSettings = {
-        pokedex: 2,
-        random: false,
-        filters: {
-            // filters are not yet implemented
-            mega: true,
-            gmax: true,
-            pikachu: true,
-            alola: true,
-            galar: true,
-        },
-    }
-
-    arrayPkmnSpecies = await fetchPkmnSpecies(gameSettings.pokedex)
-
+    arrayPkmnSpecies = await fetchPkmnSpecies(parseInt(gameSettings.pokedex))
     arrayPkmn = await fetchPkmn(arrayPkmnSpecies)
 
     // random mode with Fisher-Yates Shuffle algorithm
-    if (random) {
+    if (gameSettings.random) {
         let index = arrayPkmn.length, randomIndex
         while (index != 0) {
             randomIndex = Math.floor(Math.random() * index)
@@ -205,7 +350,6 @@ async function initializeArrayPkmn (random) {
     }
 
     // TODO: make the random array still have the varieties next to their parent
-
     console.log(arrayPkmn)
 }
 
@@ -424,10 +568,9 @@ function loadMenu (replay=false) {
 
 async function loadGame (random=false, back=false) {
     if (!back) {
-        // get settings from the menu dom elements
+        await getGameSettings()
         await initializeArrayPkmn(random)
-        // loading screen?
-        displayPkmnData()
+        await displayPkmnData()
     }
 
     domMenu.style.display = "none",
@@ -572,4 +715,4 @@ function capitalizeWord (s) {
 }
 
 // FIRST FUNCTION CALL
-// calcGenTotal()
+loadMenuData()
