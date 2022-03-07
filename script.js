@@ -1,15 +1,10 @@
 // CONST
-const gen1Array = createIntArray(1, 151)
-const gen2Array = createIntArray(152, 251)
-const gen3Array = createIntArray(252, 386)
-const gen4Array = createIntArray(387, 494)
-const gen5Array = createIntArray(495, 649)
-const gen6Array = createIntArray(650, 721)
-const gen7Array = createIntArray(722, 809)
-const gen8Array = createIntArray(810, 898)
+const urlApi = "https://pokeapi.co/api/v2/"
+const urlPokedex = urlApi + "pokedex/"
+const urlPkmnSpecies = urlApi + "pokemon-species/"
+const urlPkmn = urlApi + "pokemon/"
 
 const typesArray = [ "normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"]
-const gensArray = ["gen1", "gen2", "gen3", "gen4", "gen5", "gen6", "gen7", "gen8"]
 const colorDict = {
     "normal": "#A8A77A",
     "fire": "#EE8130",
@@ -32,8 +27,9 @@ const colorDict = {
 }
 
 // VARIABLES
-var genSelections = [true, true, true, true, true, true, true, true]
-var pkmnIdsArray = []
+var gameSettings = {}
+var arrayPkmnSpecies = []
+var arrayPkmn = []
 var currentArrayIndex = 0
 var currentPkmnData = {}
 
@@ -78,22 +74,6 @@ var resultsData = {
     "steelRatio": 0,
     "fairy": 0,
     "fairyRatio": 0,
-    "gen1": 0,
-    "gen1Ratio":0,
-    "gen2": 0,
-    "gen2Ratio":0,
-    "gen3": 0,
-    "gen3Ratio":0,
-    "gen4": 0,
-    "gen4Ratio":0,
-    "gen5": 0,
-    "gen5Ratio":0,
-    "gen6": 0,
-    "gen6Ratio":0,
-    "gen7": 0,
-    "gen7Ratio":0,
-    "gen8": 0,
-    "gen8Ratio":0,
 }
 
 // DOM ELEMENTS
@@ -102,16 +82,8 @@ const domBody = document.body
 const domButtonTheme = document.getElementById("button-theme")
 
 const domTitle = document.getElementById("app-title")
+
 const domMenu = document.getElementById("menu")
-const domGen1 = document.getElementById("gen1")
-const domGen2 = document.getElementById("gen2")
-const domGen3 = document.getElementById("gen3")
-const domGen4 = document.getElementById("gen4")
-const domGen5 = document.getElementById("gen5")
-const domGen6 = document.getElementById("gen6")
-const domGen7 = document.getElementById("gen7")
-const domGen8 = document.getElementById("gen8")
-const domGenTotal = document.getElementById("genTotal")
 
 const domGame = document.getElementById("game")
 const domPkmnInfos = document.getElementById("pokemon-info")
@@ -120,7 +92,6 @@ const domPkmnId = document.getElementById("pokemon-id")
 const domPkmnName = document.getElementById("pokemon-name")
 const domPkmnSize = document.getElementById("pokemon-size")
 const domPkmnTypes = document.getElementById("pokemon-types")
-const domPkmnGen = document.getElementById("pokemon-gen")
 const domCatchTotal = document.getElementById("catch-total")
 const domCatchRatio = document.getElementById("catch-ratio")
 const domPassTotal = document.getElementById("pass-total")
@@ -147,60 +118,95 @@ const domDownloadLink = document.getElementById("download-link")
 const domVersionNumber = document.getElementById("version-number")
 
 // MENU FUNCTIONS
-function calcGenTotal () {
-    let gen1 = domGen1.checked ? parseInt(domGen1.getAttribute("value")) : 0
-    let gen2 = domGen2.checked ? parseInt(domGen2.getAttribute("value")) : 0
-    let gen3 = domGen3.checked ? parseInt(domGen3.getAttribute("value")) : 0
-    let gen4 = domGen4.checked ? parseInt(domGen4.getAttribute("value")) : 0
-    let gen5 = domGen5.checked ? parseInt(domGen5.getAttribute("value")) : 0
-    let gen6 = domGen6.checked ? parseInt(domGen6.getAttribute("value")) : 0
-    let gen7 = domGen7.checked ? parseInt(domGen7.getAttribute("value")) : 0
-    let gen8 = domGen8.checked ? parseInt(domGen8.getAttribute("value")) : 0
-    let total = gen1 + gen2 + gen3 + gen4 + gen5 + gen6 + gen7 + gen8
-    domGenTotal.innerHTML = String(total)
+async function fetchPkmnSpecies (paramPokedexNumber) {
+    let returnArray = []
+    let fetchData = await (await fetch(urlPokedex + paramPokedexNumber)).json()
+    for (let i = 0; i < fetchData.pokemon_entries.length; i++) {
+        returnArray.push(fetchData.pokemon_entries[i].entry_number)
+    }
+    return returnArray
+}
 
-    // toggle menu buttons
-    let menuButtons = document.querySelectorAll("#menu-buttons button")
-    if (total == 0) {
-        for (let i = 0; i < menuButtons.length; i++) {
-            menuButtons[i].disabled = true
+async function fetchPkmn (paramSpeciesArray) {
+    let returnArray = []
+    for (let species of paramSpeciesArray) {
+        let fetchData = await (await fetch(urlPkmnSpecies + species)).json()
+        // default id
+        let arrayEntry = {}
+        let urlArray = fetchData.varieties["0"].pokemon.url.split("/")
+        arrayEntry.id = urlArray[urlArray.length - 2]
+        returnArray.push(arrayEntry)
+        // varieties
+        if (fetchData.varieties[1] ? true : false) {
+            for (let i = 1; i < fetchData.varieties.length; i++) {
+                let arrayEntry = {}
+                let urlArray = fetchData.varieties[i].pokemon.url.split("/")
+                arrayEntry.id = urlArray[urlArray.length - 2]
+                let urlParentArray = fetchData.varieties[0].pokemon.url.split("/")
+                arrayEntry.idParent = urlParentArray[urlParentArray.length - 2]
+                arrayEntry.variety = getVariety(fetchData.varieties[i].pokemon.name)
+                if (arrayEntry.variety !== "cancel") {
+                    returnArray.push(arrayEntry)
+                }
+            }
         }
+        // need to implement filters
+    }
+    return returnArray
+}
+
+function getVariety (name) {
+    arrayName = name.split("-")
+    if (arrayName.includes("totem")) {
+        return "cancel"
+    } else if (arrayName.includes("mega")) {
+        return "mega"
+    } else if (arrayName.includes("gmax")) {
+        return "gmax"
+    } else if (arrayName.includes("pikachu")) {
+        // pikachu must be after gmax and before alola
+        return "cancel" // temp not including pikachus
+    } else if (arrayName.includes("alola")) {
+        return "alola"
+    } else if (arrayName.includes("galar")) {
+        return "galar"
     } else {
-        for (let i = 0; i < menuButtons.length; i++) {
-            menuButtons[i].disabled = false
-        }
+        return "cancel"
     }
 }
 
-function calcPkmnIdsArray (random=false) {
-    // reset the array
-    pkmnIdsArray = []
-    // set the generations bool array
-    for (let i = 0; i < genSelections.length; i++) {
-        let genNumber = i + 1
-        genSelections[i] = document.getElementById("gen" + genNumber).checked
+async function initializeArrayPkmn (random) {
+    // random will be handled in game settings not function parameters
+    gameSettings = {
+        pokedex: 2,
+        random: false,
+        filters: {
+            // filters are not yet implemented
+            mega: true,
+            gmax: true,
+            pikachu: true,
+            alola: true,
+            galar: true,
+        },
     }
-    // create the array of pkmn ids
-    if (genSelections[0]) pkmnIdsArray = pkmnIdsArray.concat(gen1Array)
-    if (genSelections[1]) pkmnIdsArray = pkmnIdsArray.concat(gen2Array)
-    if (genSelections[2]) pkmnIdsArray = pkmnIdsArray.concat(gen3Array)
-    if (genSelections[3]) pkmnIdsArray = pkmnIdsArray.concat(gen4Array)
-    if (genSelections[4]) pkmnIdsArray = pkmnIdsArray.concat(gen5Array)
-    if (genSelections[5]) pkmnIdsArray = pkmnIdsArray.concat(gen6Array)
-    if (genSelections[6]) pkmnIdsArray = pkmnIdsArray.concat(gen7Array)
-    if (genSelections[7]) pkmnIdsArray = pkmnIdsArray.concat(gen8Array)
 
-    // mode random with Fisher-Yates Shuffle algorithm
+    arrayPkmnSpecies = await fetchPkmnSpecies(gameSettings.pokedex)
+
+    arrayPkmn = await fetchPkmn(arrayPkmnSpecies)
+
+    // random mode with Fisher-Yates Shuffle algorithm
     if (random) {
-        let index = pkmnIdsArray.length, randomIndex
+        let index = arrayPkmn.length, randomIndex
         while (index != 0) {
             randomIndex = Math.floor(Math.random() * index)
             index--
-            [pkmnIdsArray[index], pkmnIdsArray[randomIndex]] = [pkmnIdsArray[randomIndex], pkmnIdsArray[index]]
+            [arrayPkmn[index], arrayPkmn[randomIndex]] = [arrayPkmn[randomIndex], arrayPkmn[index]]
         }
     }
 
-    displayPkmnData()
+    // TODO: make the random array still have the varieties next to their parent
+
+    console.log(arrayPkmn)
 }
 
 // GAME FUNCTIONS
@@ -211,7 +217,7 @@ function prevPkmn () {
 }
 
 function nextPkmn () {
-    if (currentArrayIndex >= pkmnIdsArray.length - 1) {
+    if (currentArrayIndex >= arrayPkmn.length - 1) {
         loadResults(end=true)
         return
     }
@@ -243,7 +249,6 @@ function catchPkmn () {
     } else {
         resultsData[currentPkmnData.type1] += 1
     }
-    resultsData["gen" + domPkmnGen.innerHTML.slice(-1)] += 1
 
     // caught table
     if (!domCatchTable.firstChild || (resultsData["catch"] - 1) % 4 == 0) {
@@ -282,23 +287,11 @@ function updateRatios () {
     resultsData["darkRatio"] = Math.round(100 * resultsData["dark"] / resultsData["catch"])
     resultsData["steelRatio"] = Math.round(100 * resultsData["steel"] / resultsData["catch"])
     resultsData["fairyRatio"] = Math.round(100 * resultsData["fairy"] / resultsData["catch"])
-
-    // gen ratios
-    resultsData["gen1Ratio"] = Math.round(100 * resultsData["gen1"] / resultsData["catch"])
-    resultsData["gen2Ratio"] = Math.round(100 * resultsData["gen2"] / resultsData["catch"])
-    resultsData["gen3Ratio"] = Math.round(100 * resultsData["gen3"] / resultsData["catch"])
-    resultsData["gen4Ratio"] = Math.round(100 * resultsData["gen4"] / resultsData["catch"])
-    resultsData["gen5Ratio"] = Math.round(100 * resultsData["gen5"] / resultsData["catch"])
-    resultsData["gen6Ratio"] = Math.round(100 * resultsData["gen6"] / resultsData["catch"])
-    resultsData["gen7Ratio"] = Math.round(100 * resultsData["gen7"] / resultsData["catch"])
-    resultsData["gen8Ratio"] = Math.round(100 * resultsData["gen8"] / resultsData["catch"])
-
 }
 
 async function fetchPkmnData () {
     // fetch the data from the API
-    let idToFetch = pkmnIdsArray[currentArrayIndex]
-    if (idToFetch < 1 || idToFetch > 898) return
+    let idToFetch = arrayPkmn[currentArrayIndex].id
     return await (await fetch("https://pokeapi.co/api/v2/pokemon/" + idToFetch)).json()
 }
 
@@ -357,8 +350,6 @@ async function displayPkmnData () {
         domPkmnInfos.removeAttribute("class")
         domPkmnInfos.classList.add(currentPkmnData.type1)
     }
-    // gen
-    domPkmnGen.innerHTML = "gen " + currentPkmnData.gen
 }
 
 function getGenById (id) {
@@ -407,13 +398,13 @@ function loadResultsData () {
     }
 
     // gen ratios
-    domResultsGenRatios.innerHTML = ""
-    for (let i= 0; i < gensArray.length; i++) {
-        let element = document.createElement("span")
-        element.setAttribute("value", resultsData[gensArray[i]])
-        element.innerHTML = "Gen " + (i + 1) + ": " + String(resultsData[gensArray[i] + "Ratio"]) + "%"
-        domResultsGenRatios.appendChild(element)
-    }
+    // domResultsGenRatios.innerHTML = ""
+    // for (let i= 0; i < gensArray.length; i++) {
+    //     let element = document.createElement("span")
+    //     element.setAttribute("value", resultsData[gensArray[i]])
+    //     element.innerHTML = "Gen " + (i + 1) + ": " + String(resultsData[gensArray[i] + "Ratio"]) + "%"
+    //     domResultsGenRatios.appendChild(element)
+    // }
 
     // catch table
     domResultsCatchTable.innerHTML = domCatchTable.innerHTML
@@ -431,12 +422,17 @@ function loadMenu (replay=false) {
     }
 }
 
-function loadGame (random=false, back=false) {
+async function loadGame (random=false, back=false) {
+    if (!back) {
+        // get settings from the menu dom elements
+        await initializeArrayPkmn(random)
+        // loading screen?
+        displayPkmnData()
+    }
+
     domMenu.style.display = "none",
     domGame.style.display = "flex"
     domResults.style.display = "none"
-
-    if (!back) calcPkmnIdsArray(random)
 
     // disable buttons in case of reload
     if (resultsData["total"] == 0) {
@@ -471,7 +467,6 @@ function clearGameData () {
     domPkmnName.innerHTML = ""
     domPkmnSize.innerHTML = ""
     domPkmnTypes.innerHTML = ""
-    domPkmnGen.innerHTML = ""
     domCatchTable.innerHTML = ""
     domButtonCheck.disabled = true
     domButtonEnd.disabled = true
@@ -577,4 +572,4 @@ function capitalizeWord (s) {
 }
 
 // FIRST FUNCTION CALL
-calcGenTotal()
+// calcGenTotal()
