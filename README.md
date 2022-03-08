@@ -20,6 +20,9 @@ The website is hosted on Netlify.
 
 # VERSIONS
 
+### VERSION 1.1.1 - 2022/03/08
+- Fix: Loading time is now reasonable
+
 ### VERSION 1.1.0 - 2022/03/07
 - Menu: New interface, with a pokédex selector and variants filters
 - Game: Added a loading screen to inform users that the data is loading
