@@ -77,8 +77,9 @@ const colorDict = {
 // VARIABLES
 var gameSettings = {}
 var arrayPkmnSpecies = []
-var arrayPkmn = []
-var currentArrayIndex = 0
+var indexPkmnSpecies = 0
+var arrayPkmnVarieties = []
+var indexPkmnVarieties = 0
 var currentPkmnData = {}
 
 var resultsData = {
@@ -276,7 +277,7 @@ async function getGameSettings () {
     }
 }
 
-async function fetchPkmnSpecies (paramPokedexNumber) {
+async function fetchPkmnSpeciesArray (paramPokedexNumber) {
     let returnArray = []
     let fetchData = await (await fetch(urlPokedex + paramPokedexNumber)).json()
     for (let i = 0; i < fetchData.pokemon_entries.length; i++) {
@@ -286,37 +287,12 @@ async function fetchPkmnSpecies (paramPokedexNumber) {
     return returnArray
 }
 
-async function fetchPkmn (paramSpeciesArray) {
-    let returnArray = []
-    for (let species of paramSpeciesArray) {
-        let fetchData = await (await fetch(urlPkmnSpecies + species)).json()
-        // default id
-        let arrayEntry = {}
-        let urlArray = fetchData.varieties["0"].pokemon.url.split("/")
-        arrayEntry.id = urlArray[urlArray.length - 2]
-        returnArray.push(arrayEntry)
-        // varieties
-        if (
-            (gameSettings.filters.mega || gameSettings.filters.gmax ||
-            gameSettings.filters.alola || gameSettings.filters.galar
-            ) &&
-            fetchData.varieties[1] ? true : false
-        ) {
-            for (let i = 1; i < fetchData.varieties.length; i++) {
-                let arrayEntry = {}
-                let urlArray = fetchData.varieties[i].pokemon.url.split("/")
-                arrayEntry.id = urlArray[urlArray.length - 2]
-                let urlParentArray = fetchData.varieties[0].pokemon.url.split("/")
-                arrayEntry.idParent = urlParentArray[urlParentArray.length - 2]
-                arrayEntry.variety = getVariety(fetchData.varieties[i].pokemon.name)
-                if (arrayEntry.variety !== "cancel") {
-                    returnArray.push(arrayEntry)
-                }
-            }
-        }
-        // need to implement filters
-    }
-    return returnArray
+async function fetchPkmnSpeciesData (id = arrayPkmnSpecies[indexPkmnSpecies]) {
+    return await (await fetch("https://pokeapi.co/api/v2/pokemon-species/" + id)).json()
+}
+
+async function fetchPkmnData (id) {
+    return await (await fetch("https://pokeapi.co/api/v2/pokemon/" + id)).json()
 }
 
 function getVariety (name) {
@@ -339,42 +315,58 @@ function getVariety (name) {
     }
 }
 
-async function initializeArrayPkmn (random) {
-    arrayPkmnSpecies = await fetchPkmnSpecies(parseInt(gameSettings.pokedex))
-    arrayPkmn = await fetchPkmn(arrayPkmnSpecies)
-
+async function initializeArrayPkmnSpecies (random) {
+    arrayPkmnSpecies = await fetchPkmnSpeciesArray(parseInt(gameSettings.pokedex))
+    
     // random mode with Fisher-Yates Shuffle algorithm
     if (gameSettings.random) {
-        let index = arrayPkmn.length, randomIndex
+        let index = arrayPkmnSpecies.length, randomIndex
         while (index != 0) {
             randomIndex = Math.floor(Math.random() * index)
             index--
-            [arrayPkmn[index], arrayPkmn[randomIndex]] = [arrayPkmn[randomIndex], arrayPkmn[index]]
+            [arrayPkmnSpecies[index], arrayPkmnSpecies[randomIndex]] = [arrayPkmnSpecies[randomIndex], arrayPkmnSpecies[index]]
         }
     }
-
-    // TODO: make the random array still have the varieties next to their parent
 }
 
 // GAME FUNCTIONS
 function prevPkmn () {
-    if (currentArrayIndex <= 0) return
-    currentArrayIndex -= 1
+    if (indexPkmnSpecies <= 0) return
+    indexPkmnSpecies -= 1
     displayPkmnData()
 }
 
 function nextPkmn () {
-    if (currentArrayIndex >= arrayPkmn.length - 1) {
+    // end condition
+    if (indexPkmnSpecies >= arrayPkmnSpecies.length - 1) {
         loadResults(end=true)
         return
     }
-    currentArrayIndex += 1
 
     // re-enable results buttons
     domButtonCheck.disabled = false
     domButtonEnd.disabled = false
 
-    displayPkmnData()
+    // check if there are some varieties
+    if (arrayPkmnVarieties.length != 0) {
+        // check if the index is not at the end
+        if (indexPkmnVarieties <= arrayPkmnVarieties.length - 1) {
+            displayPkmnData(variety=true)
+            indexPkmnVarieties += 1
+        } else {
+            // if we went through all varieties, reset the data
+            arrayPkmnVarieties = []
+            indexPkmnVarieties = 0
+
+            // and then go to next pokemon
+            indexPkmnSpecies += 1
+            displayPkmnData()
+        }
+    } else {
+        // next species
+        indexPkmnSpecies += 1
+        displayPkmnData()
+    }
 }
 
 function passPkmn () {
@@ -436,15 +428,31 @@ function updateRatios () {
     resultsData["fairyRatio"] = Math.round(100 * resultsData["fairy"] / resultsData["catch"])
 }
 
-async function fetchPkmnData () {
-    // fetch the data from the API
-    let idToFetch = arrayPkmn[currentArrayIndex].id
-    return await (await fetch("https://pokeapi.co/api/v2/pokemon/" + idToFetch)).json()
-}
+async function loadPkmnData (variety=false) {
+    let pkmnData
+    if (variety) {
+        pkmnData = await fetchPkmnData(arrayPkmnVarieties[indexPkmnVarieties])
+    } else {
+        // first api call to get the varieties
+        let pkmnSpeciesData = await fetchPkmnSpeciesData()
+    
+        // get the base pokemon id
+        let urlArray = pkmnSpeciesData.varieties[0].pokemon.url.split("/")
+        let pokemonId = urlArray[urlArray.length - 2]
+    
+        // display normal form
+        pkmnData = await fetchPkmnData(pokemonId)
+    
+        // save the varieties
+        if (pkmnSpeciesData.varieties.length > 1) {
+            for (let i = 1; i < pkmnSpeciesData.varieties.length; i++) {
+                let urlArray = pkmnSpeciesData.varieties[i].pokemon.url.split("/")
+                arrayPkmnVarieties.push(urlArray[urlArray.length - 2])
+            }
+        }
+    }
 
-async function loadPkmnData () {
     // load the data into a js object
-    let pkmnData = await fetchPkmnData()
     currentPkmnData = {}
     currentPkmnData.id = pkmnData.id
     currentPkmnData.sprite = pkmnData.sprites.front_default
@@ -462,9 +470,9 @@ async function loadPkmnData () {
     domPassTotal.innerHTML = resultsData["pass"]
 }
 
-async function displayPkmnData () {
+async function displayPkmnData (variety) {
     // displays data on the dom
-    await loadPkmnData()
+    await loadPkmnData(variety)
     domPkmnId.innerHTML = "#" + currentPkmnData.id
     domPkmnSprite.setAttribute("src", currentPkmnData.sprite)
     domPkmnName.innerHTML = currentPkmnData.name
@@ -571,7 +579,7 @@ async function loadGame (random=false, back=false) {
         await getGameSettings()
         domMenu.style.display = "none"
         domLoader.style.display = "block"
-        await initializeArrayPkmn(random)
+        await initializeArrayPkmnSpecies(random)
         await displayPkmnData()
         domLoader.style.display = "none"
     }
@@ -604,8 +612,9 @@ function loadResults (end=false) {
 function clearGameData () {
     // var
     arrayPkmnSpecies = []
-    arrayPkmn = []
-    currentArrayIndex = 0
+    indexPkmnSpecies = 0
+    arrayPkmnVarieties = []
+    indexPkmnVarieties = 0
     currentPkmnData = {}
 
     // dom
