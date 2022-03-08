@@ -29,6 +29,13 @@ And more...
 
 # VERSIONS
 
+### VERSION 1.1.1 - 2022/03/08
+- Fix: Loading time is now reasonable
+
+### VERSION 1.1.0 - 2022/03/07
+- Menu: New interface, with a pokédex selector and variants filters
+- Game: Added a loading screen to inform users that the data is loading
+
 ### VERSION 1.0.2a - 2022/03/06
 - Style: Made this website safe for work
 
