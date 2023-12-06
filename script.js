@@ -447,7 +447,9 @@ async function loadPkmnData (variety=false) {
         if (pkmnSpeciesData.varieties.length > 1) {
             for (let i = 1; i < pkmnSpeciesData.varieties.length; i++) {
                 let urlArray = pkmnSpeciesData.varieties[i].pokemon.url.split("/")
-                arrayPkmnVarieties.push(urlArray[urlArray.length - 2])
+                if (gameSettings.filters[pkmnSpeciesData.varieties[i].pokemon.name.split('-')[1]]) {
+                    arrayPkmnVarieties.push(urlArray[urlArray.length - 2])
+                }
             }
         }
     }
