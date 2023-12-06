@@ -29,6 +29,9 @@ And more...
 
 # VERSIONS
 
+### VERSION 1.1.2 - 2023/12/05
+- Fix: Filters now work
+
 ### VERSION 1.1.1 - 2022/03/08
 - Fix: Loading time is now reasonable
 
